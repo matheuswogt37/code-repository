@@ -15,7 +15,6 @@ int main() {
     }
 
     printList(queue);
-    
     printf("\n\ntamanho da lista: %i\n", queue->size);
     printf("head: %i\n", queue->head->info);
     printf("tail: %i\n", queue->tail->info);

@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-
+    
 typedef struct sNode {
     int info;
     struct sNode *next;
@@ -189,51 +189,4 @@ Node *search(List *list, int data)
         }
     }
     return NULL;
-}
-
-void commands(List *list) {
-    int data, dataPivo, cmd, cmd2;
-    do
-    {
-        printf("\n<-- Escolha -->\n");
-        printf("1 - inserir elemento\n2 - remover elemento\n3 - mostrar a lista\n0 - sair\n");
-        scanf("%i", &cmd);
-        if (cmd == 1) // inserir elemento
-        {
-            printf("Digite a informacao a ser armazenada: ");
-            scanf("%i", &data);
-            printf("\n[ ESCOLHA ]\n");
-            printf("1 - pivo proprio\n2 - elemento head\n3 - elemento tail\n");
-            scanf("%i", &cmd2);
-            if (cmd2 == 1)
-            {
-                printf("Digite a informacao referente ao pivo: ");
-                scanf("%i", &dataPivo);
-                insertNodo(list, searchInfo(list, dataPivo), data);
-            }
-            else if (cmd2 == 2)
-            {
-                insertNodo(list, list->head, data);
-            }
-            else if (cmd2 == 3)
-            {
-                insertNodo(list, list->tail, data);
-            }
-            else
-            {
-                printf("Escolha nao valida!\n");
-            }
-        }
-        else if (cmd == 2) // remover elemento
-        {
-            printf("Digite a informacao referente ao pivo: ");
-            scanf("%i", &dataPivo);
-            errorTreatment(removeNode(list, search(list, dataPivo)));
-        }
-        else if (cmd == 3) // percorrer a lista
-        {
-            printList(list);
-        }
-    } while (cmd != 0);
-    printf("saindo...");
 }

@@ -26,7 +26,7 @@ Node *createNode(int data)
         nodo->below = NULL;
     }
 
-    return NULL;
+    return nodo;
 }
 
 // allocPile
@@ -57,6 +57,7 @@ void freePile(Pile *pile)
     {
         auxNodo = delNodo->below;
         freeNode(delNodo);
+        delNodo = auxNodo;
     }
     free(pile);
 }
@@ -93,11 +94,15 @@ int insertNode(Pile *pile, int data)
     {
         return -1;
     }
+
     if (emptyPile(pile) == 0)
     {
+        nodo->below = pile->top;
         pile->top->above = nodo;
     }
-    nodo->below = pile->top;
+    pile->top = nodo;
+
+    pile->size++;
     return 1;
 }
 
@@ -114,6 +119,7 @@ int removeNode(Pile *pile)
     freeNode(pile->top);
     pile->top = auxNodo;
 
+    pile->size--;
     return 1;
 }
 
@@ -141,15 +147,18 @@ int searchNode(Pile *pile, int data)
 }
 
 // printPile
-int printPile(Pile *pile) {
-    Node* nodo;
-    if (emptyPile(pile)) {
+int printPile(Pile *pile)
+{
+    Node *nodo;
+    if (emptyPile(pile))
+    {
         return -2;
     }
     nodo = pile->top;
 
-    printf("\tpilha\n");
-    for (int i = 0; i < pile->size; i++) {
+    printf("\n\tpilha - %i\n", pile->size);
+    for (int i = 0; i < pile->size; i++)
+    {
         printf("\t%i\n", nodo->info);
         nodo = nodo->below;
     }

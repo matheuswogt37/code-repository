@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-    
+
 typedef struct sNode {
     int info;
     struct sNode *next;
@@ -139,12 +139,12 @@ void printList(List *list)
     Node *nodo;
     if (emptyList(list))
     {
-        printf("Lista esta vazia!\n");
+        printf("\nLista esta vazia!\n");
     }
     else
     {
         nodo = list->head;
-        printf("<-- Lista -->\n");
+        printf("\n<-- Lista -->\n");
         while (nodo != NULL)
         {
             printf("%i  ", nodo->info);
@@ -189,4 +189,15 @@ Node *search(List *list, int data)
         }
     }
     return NULL;
+}
+
+void clearDoublyList(List *list) {
+    Node *nodo, *auxNodo;
+    nodo = list->head;
+    while (nodo != NULL) {
+        auxNodo = nodo->next;
+        free(nodo);
+        nodo = auxNodo;
+    }
+    list->size = 0;
 }

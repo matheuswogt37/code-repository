@@ -22,6 +22,10 @@ int main() {
 
     printList(queue);
 
+    clearList(queue);
+
+    printList(queue);
+
     freeList(queue);
     return 1;
 }

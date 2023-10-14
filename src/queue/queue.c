@@ -162,3 +162,14 @@ int printQueue(Queue *queue) {
 
     return 1;
 }
+
+void clearQueue(Queue *queue) {
+    Node *delNodo, *auxNodo;
+    delNodo = queue->head;
+    for (int i = 0; i < queue->size; i++) {
+        auxNodo = delNodo->next;
+        free(delNodo);
+        delNodo = auxNodo;
+    }
+    queue->size = 0;
+}

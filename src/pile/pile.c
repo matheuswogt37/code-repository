@@ -164,3 +164,14 @@ int printPile(Pile *pile)
     }
     return 1;
 }
+
+void clearPile(Pile *pile) {
+    Node *delNodo, *auxNodo;
+    delNodo = pile->top;
+    for (int i = 0; i < pile->size; i++) {
+        auxNodo = delNodo->below;
+        free(delNodo);
+        delNodo = auxNodo;
+    }
+    pile->size = 0;
+}

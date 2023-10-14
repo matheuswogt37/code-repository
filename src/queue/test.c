@@ -17,6 +17,10 @@ int main() {
     
     errorTreatment(printQueue(queue));
 
+    clearQueue(queue);
+
+    errorTreatment(printQueue(queue));
+
     freeQueue(queue);
     return 1;
 }

@@ -1,4 +1,4 @@
-c#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 typedef struct sNode
@@ -161,4 +161,15 @@ void printList(List *list)
             nodo = nodo->next;
         }
     }
+}
+
+void clearList(List *list) {
+    Node *delNodo, *auxNodo;
+    delNodo = list->head;
+    for (int i = 0; i < list->size; i++) {
+        auxNodo = delNodo->next;
+        free(delNodo);
+        delNodo = auxNodo;
+    }
+    list->size = 0;
 }

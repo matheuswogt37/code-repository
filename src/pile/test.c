@@ -19,6 +19,10 @@ int main() {
 
     errorTreatment(printPile(queue));
 
+    clearPile(queue);
+
+    errorTreatment(printPile(queue));
+
     freePile(queue);
     return 0;
 }

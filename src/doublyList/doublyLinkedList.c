@@ -1,21 +1,24 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-typedef struct sNode {
+typedef struct sNode
+{
     int info;
     struct sNode *next;
     struct sNode *prev;
-}Node;
+} Node;
 
-typedef struct {
+typedef struct
+{
     Node *head;
     Node *tail;
     int size;
-}List;
+} List;
 
 // ----------------------------------------------------------------------------------------
 
-Node *createNode(int data) {
+Node *createNode(int data)
+{
     Node *nodo;
     nodo = (Node *)malloc(sizeof(Node));
     if (nodo != NULL)
@@ -27,7 +30,8 @@ Node *createNode(int data) {
     return nodo;
 }
 
-List *allocList() {
+List *allocList()
+{
     List *queue;
     queue = (List *)malloc(sizeof(List));
     if (queue != NULL)
@@ -69,22 +73,30 @@ int emptyList(List *list)
     return 0;
 }
 
-int insertNodo(List *list, Node *pivo, int data) {
+int insertNodo(List *list, Node *pivo, int data)
+{
     Node *newNodo;
     newNodo = createNode(data);
-    if ((pivo == NULL) && (emptyList(list) == 0)) {
+    if ((pivo == NULL) && (emptyList(list) == 0))
+    {
         return -1;
     }
-    if (emptyList(list)) {
+    if (emptyList(list))
+    {
         list->head = newNodo;
         list->tail = newNodo;
-    } else {
+    }
+    else
+    {
         newNodo->next = pivo->next;
         newNodo->prev = pivo;
 
-        if (pivo->next == NULL) {
+        if (pivo->next == NULL)
+        {
             list->tail = newNodo;
-        } else {
+        }
+        else
+        {
             pivo->next->prev = newNodo;
         }
         pivo->next = newNodo;
@@ -93,40 +105,54 @@ int insertNodo(List *list, Node *pivo, int data) {
     return 1;
 }
 
-int removeNode(List *list, Node *pivo) {
+int removeNode(List *list, Node *pivo)
+{
     if (emptyList(list))
     {
         return -2;
     }
-    if ((pivo!=NULL)) {
-        if (list->head == pivo) {
+    if ((pivo != NULL))
+    {
+        if (list->head == pivo)
+        {
             list->head = pivo->next;
-            if (list->head == NULL) {
+            if (list->head == NULL)
+            {
                 list->tail = NULL;
-            } else {
+            }
+            else
+            {
                 list->head->prev = NULL;
             }
-        } else {
+        }
+        else
+        {
             pivo->prev->next = pivo->next;
-            if (pivo->next == NULL) {
+            if (pivo->next == NULL)
+            {
                 list->tail = pivo->prev;
-            } else {
+            }
+            else
+            {
                 pivo->next->prev = pivo->prev;
             }
         }
         freeNode(pivo);
         list->size--;
         return 1;
-    }    
+    }
     return -3;
 }
 
-Node *searchInfo(List *list, int data) {
+Node *searchInfo(List *list, int data)
+{
     int i;
     Node *nodo;
     nodo = list->head;
-    for (i = 0; i < list->size; i++) {
-        if (nodo->info == data) {
+    for (i = 0; i < list->size; i++)
+    {
+        if (nodo->info == data)
+        {
             return nodo;
         }
         nodo = nodo->next;
@@ -191,13 +217,43 @@ Node *search(List *list, int data)
     return NULL;
 }
 
-void clearDoublyList(List *list) {
+void clearDoublyList(List *list)
+{
     Node *nodo, *auxNodo;
     nodo = list->head;
-    while (nodo != NULL) {
+    while (nodo != NULL)
+    {
         auxNodo = nodo->next;
         free(nodo);
         nodo = auxNodo;
     }
     list->size = 0;
+}
+
+void swapNodes(List *list, Node *nodo1, Node *nodo2)
+{
+    Node *auxPrev, *auxNext;
+    //  atribuição nos campos das listas
+    if (nodo1 == list->head)
+    {
+        list->head = nodo2;
+    }
+    else if (nodo2 == list->head)
+    {
+        list->head = nodo1;
+    }
+    if (nodo1 == list->tail)
+    {
+        list->tail = nodo2;
+    } else if (nodo2 == list->tail) {
+        list->tail = nodo1;
+    }
+
+    //  troca dos elementos
+    auxNext = nodo1->next;
+    auxPrev = nodo1->prev;
+    nodo1->next = nodo2->next;
+    nodo1->prev = nodo2->prev;
+    nodo2->next = auxNext;
+    nodo2->prev = auxPrev;
 }

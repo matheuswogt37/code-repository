@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int main() {
 
-static void staticHelloWorld () {
-    printf("Hello world!\n");
+    int y;
+
+    y = (2+3)/4;
+
+    printf("%i\n", y);
+
+    return 0;
 }
-
-void helloWord() {
-    staticHelloWorld();
-}
-
-#undef staticHelloWord

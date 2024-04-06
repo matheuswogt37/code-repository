@@ -7,7 +7,7 @@ class FacAbstractPagamento {
         FacAbstractPagamento();
     public:
         ~FacAbstractPagamento();
-        virtual AbstractPagar* createPagar();
+        virtual AbstractPagar* createPagar() = 0;
 };
 
 #endif

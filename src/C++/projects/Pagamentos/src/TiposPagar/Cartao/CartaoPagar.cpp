@@ -1,7 +1,7 @@
 #include "CartaoPagar.hpp"
 
-CartaoPagar::CartaoPagar() : AbstractPagar(){};
+CartaoPagar::~CartaoPagar() {};
 
 void CartaoPagar::pagar() {
-    printf("vc pagou com Cartao\n");
+    std::cout << "vc pagou com Cartao\n";
 }

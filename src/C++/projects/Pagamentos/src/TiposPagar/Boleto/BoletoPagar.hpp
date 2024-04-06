@@ -4,7 +4,7 @@
 
 class BoletoPagar:public AbstractPagar {
     public:
-        BoletoPagar();
+        BoletoPagar() : AbstractPagar() {};
         ~BoletoPagar();
         void pagar();
 };

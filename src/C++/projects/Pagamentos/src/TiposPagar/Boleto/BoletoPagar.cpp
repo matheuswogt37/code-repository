@@ -1,7 +1,7 @@
 #include "BoletoPagar.hpp"
 
-BoletoPagar::BoletoPagar() : AbstractPagar(){};
+BoletoPagar::~BoletoPagar() {};
 
 void BoletoPagar::pagar() {
-    printf("vc pagou com Boleto\n");
+    std::cout << "vc pagou com Boleto\n";
 }

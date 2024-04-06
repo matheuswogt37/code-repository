@@ -1,7 +1,7 @@
 #include "PixPagar.hpp"
 
-PixPagar::PixPagar() : AbstractPagar(){};
+PixPagar::~PixPagar() {};
 
 void PixPagar::pagar() {
-    printf("vc pagou com Pix\n");
+    std::cout<< "vc pagou com Pix\n";
 }

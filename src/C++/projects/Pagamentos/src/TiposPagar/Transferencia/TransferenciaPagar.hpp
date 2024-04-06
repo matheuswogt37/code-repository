@@ -4,7 +4,7 @@
 
 class TransferenciaPagar:public AbstractPagar {
     public:
-        TransferenciaPagar();
+        TransferenciaPagar() : AbstractPagar() {};
         ~TransferenciaPagar();
         void pagar();
 };

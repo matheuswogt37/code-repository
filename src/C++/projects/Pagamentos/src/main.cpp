@@ -5,9 +5,9 @@ using namespace std;
 
 int main() {
 
-    // cout<<"hello world";
-    Pix pix;
-    // pix.createPagar();
+    Pix pixTemp;
+    AbstractPagar* pix = pixTemp.createPagar();
+    pix->pagar();
 
     return 0;
 }

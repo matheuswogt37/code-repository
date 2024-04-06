@@ -4,7 +4,7 @@
 
 class PixPagar:public AbstractPagar {
     public:
-        PixPagar();
+        PixPagar() : AbstractPagar(){};
         ~PixPagar();
         void pagar();
 };

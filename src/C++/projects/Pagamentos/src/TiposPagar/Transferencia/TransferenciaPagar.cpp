@@ -1,7 +1,6 @@
 #include "TransferenciaPagar.hpp"
 
-TransferenciaPagar::TransferenciaPagar() : AbstractPagar(){};
+TransferenciaPagar::~TransferenciaPagar() {};
 
 void TransferenciaPagar::pagar() {
-    printf("vc pagou com Transferencia\n");
-}
+    std::cout << "vc pagou com Transferencia";

@@ -1,7 +1,9 @@
 #include "Pix.hpp"
 
-Pix::Pix():FacAbstractPagamento(){};
+Pix::Pix(){};
+Pix::~Pix(){};
 
 AbstractPagar* Pix::createPagar() {
-    return new PixPagar();
+    AbstractPagar* pix = new PixPagar();
+    return pix;
 }

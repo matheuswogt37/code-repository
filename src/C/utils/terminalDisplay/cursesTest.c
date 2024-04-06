@@ -45,11 +45,14 @@ int kbhit(void)
 
 int main()
 {
-  initscr();
-  int y, x;
+  init
+
+
+  // initscr();
+  // int y, x;
   
 
-  getmaxyx(stdscr, y, x);
+  // getmaxyx(stdscr, y, x);
   // while(!kbhit()) {
     
   //   for (int i = 0; i > -1; i++) {
@@ -62,15 +65,15 @@ int main()
   // }
 
 
-  mvprintw(5, 5, "%s", "hello world");
-  refresh();
-  sleep(5);
-  printw("hello world");
+  // mvprintw(5, 5, "%s", "hello world");
+  // refresh();
+  // sleep(5);
+  // printw("hello world");
 
-  printf("\nacabou\n");
+  // printf("\nacabou\n");
 
-  sleep(5);
-  endwin();
+  // sleep(5);
+  // endwin();
 
   // refresh();
   // WINDOW *window;
@@ -82,7 +85,7 @@ int main()
   //   wmove(window, 100, 100);
   //   refresh();
   //   sleep(1);
-  // }
+  }
 
   // printf("passou");
 

@@ -142,7 +142,7 @@ Node *getMaximum(Node *node)
 }
 
 // remove nodes
-void removeNodeByInfo(Node *source, int info)
+int removeNodeByInfo(Node *source, int info)
 {
     Node *remNode;
     Node *aux = NULL;
@@ -150,6 +150,7 @@ void removeNodeByInfo(Node *source, int info)
     if (remNode == NULL)
     {
         printf("Valor %d nao existe! Impossivel remover\n", info);
+        return 0;
     }
     else
     {
@@ -195,44 +196,116 @@ void removeNodeByInfo(Node *source, int info)
 
         if (remNode == source)
         {
-            source = aux;
+            free(remNode);
+            *source = *aux;
         }
-        free(remNode);
+        else
+        {
+            free(remNode);
+        }
+        return 1;
     }
 }
 
 // transplant nodes
-void transplantNodesByNodes(Node *source, Node *nodeReplaced, Node *nodeSwitch)
+int transplantNodesByNodes(Node *source, Node *nodeReplaced, Node *nodeSwitch)
 {
     Node *aux = NULL;
-    if (nodeSwitch->right != NULL)
+
+    if (nodeReplaced == NULL || nodeSwitch == NULL)
     {
-        aux = nodeSwitch->right;
-    }
-    else if (nodeSwitch->left != NULL)
-    {
-        aux = nodeSwitch->right;
+        printf("Nodos nao encontrados! Transplante nao realizado\n");
+        return 0;
     }
 
+    if (nodeSwitch->right == NULL && nodeSwitch->left != NULL)
+    {
+        aux = nodeSwitch->left;
+        aux->father = nodeSwitch->father;
+    }
+    else if (nodeSwitch->right != NULL && nodeSwitch->left == NULL)
+    {
+        aux = nodeSwitch->right;
+        aux->father = nodeSwitch->father;
+    }
+    else if (nodeSwitch->right != NULL && nodeSwitch->left != NULL)
+    {
+        aux = nodeSwitch->right;
+        aux->father = nodeSwitch->father;
+        if (nodeSwitch->left != NULL)
+        {
+            if (aux->left != NULL)
+            {
+                insertNodeByNode(aux, nodeSwitch->left);
+            }
+            else
+            {
+                aux->left = nodeSwitch->left;
+                nodeSwitch->left->father = aux;
+            }
+        }
+    }
 
-    if (nodeSwitch->father != NULL) {
-        if (nodeSwitch->father->right == nodeSwitch) {
+    if (nodeSwitch->father != NULL)
+    {
+        if (nodeSwitch->father->right == nodeSwitch)
+        {
             nodeSwitch->father->right = aux;
-        } else {
+        }
+        else
+        {
             nodeSwitch->father->left = aux;
         }
     }
 
-    nodeReplaced->left = nodeSwitch->left;
-    nodeReplaced->right = nodeSwitch->right;
-    nodeReplaced->father = nodeSwitch->father;
+    if (nodeSwitch == source)
+    {
+        *source = *aux;
+    }
+
+    nodeSwitch->left = nodeReplaced->left;
+    nodeSwitch->right = nodeReplaced->right;
+    nodeSwitch->father = nodeReplaced->father;
+
+    if (nodeReplaced->father != NULL)
+    {
+        if (nodeReplaced->father->left = nodeReplaced)
+        {
+            nodeReplaced->father->left = nodeSwitch;
+        }
+        else
+        {
+            nodeReplaced->father->right = nodeSwitch;
+        }
+    }
+    if (nodeReplaced->left != NULL)
+    {
+        nodeReplaced->left->father = nodeSwitch;
+    }
+    if (nodeReplaced->right != NULL)
+    {
+        nodeReplaced->right->father = nodeSwitch;
+    }
+
+    if (nodeReplaced == source)
+    {
+        free(nodeReplaced);
+        *source = *nodeSwitch;
+        printf("source - %d - %p\n", source->key, &source);
+    }
+    else
+    {
+        free(nodeReplaced);
+    }
+
+    return 1;
 }
 
-void transplantNodesByInfo(Node *source, int nodeReplaced, int nodeSwitch)
+int transplantNodesByInfo(Node *source, int nodeReplaced, int nodeSwitch)
 {
     Node *nReplaced = searchByInfo(source, nodeReplaced);
     Node *nSwitch = searchByInfo(source, nodeSwitch);
-    switchNodesByNodes(source, nReplaced, nodeSwitch);
+    return transplantNodesByNodes(source, nReplaced, nSwitch);
 }
 
 // prints
@@ -282,8 +355,8 @@ int main()
     printf("\n");
 
     removeNodeByInfo(source, 6);
-
-    printf("source -> %d\n", source->key);
+    // transplantNodesByInfo(source, 6, 9);
+    printf("source - %d - %p\n", source->key, &source);
 
     printf("inOrder\n");
     printInOrder(source);

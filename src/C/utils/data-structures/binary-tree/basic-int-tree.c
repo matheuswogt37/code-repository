@@ -141,70 +141,78 @@ Node *getMaximum(Node *node)
     return getMinimum(node->right);
 }
 
+Node *remoteNodeByNode(Node *source, Node *remNode, Node *aux)
+{
+
+    if (remNode->right == NULL && remNode->left != NULL)
+    {
+        aux = remNode->left;
+        aux->father = remNode->father;
+    }
+    else if (remNode->right != NULL && remNode->left == NULL)
+    {
+        aux = remNode->right;
+        aux->father = remNode->father;
+    }
+    else if (remNode->right != NULL && remNode->left != NULL)
+    {
+        aux = remNode->right;
+        aux->father = remNode->father;
+        if (remNode->left != NULL)
+        {
+            if (aux->left != NULL)
+            {
+                insertNodeByNode(aux, remNode->left);
+            }
+            else
+            {
+                aux->left = remNode->left;
+                remNode->left->father = aux;
+            }
+        }
+    }
+
+    if (remNode->father != NULL)
+    {
+        if (remNode->father->right == remNode)
+        {
+            remNode->father->right = aux;
+        }
+        else
+        {
+            remNode->father->left = aux;
+        }
+    }
+    return aux;
+}
+
+int removeNodeByNode(Node *source, Node *remNode)
+{
+    Node *aux = NULL;
+    aux = remoteNodeByNode(source, remNode, aux);
+    if (remNode == source)
+    {
+        free(remNode);
+        *source = *aux;
+    }
+    else
+    {
+        free(remNode);
+    }
+    return 1;
+}
+
 // remove nodes
 int removeNodeByInfo(Node *source, int info)
 {
     Node *remNode;
-    Node *aux = NULL;
     remNode = searchByInfo(source, info);
     if (remNode == NULL)
     {
         printf("Valor %d nao existe! Impossivel remover\n", info);
         return 0;
     }
-    else
-    {
-        if (remNode->right == NULL && remNode->left != NULL)
-        {
-            aux = remNode->left;
-            aux->father = remNode->father;
-        }
-        else if (remNode->right != NULL && remNode->left == NULL)
-        {
-            aux = remNode->right;
-            aux->father = remNode->father;
-        }
-        else if (remNode->right != NULL && remNode->left != NULL)
-        {
-            aux = remNode->right;
-            aux->father = remNode->father;
-            if (remNode->left != NULL)
-            {
-                if (aux->left != NULL)
-                {
-                    insertNodeByNode(aux, remNode->left);
-                }
-                else
-                {
-                    aux->left = remNode->left;
-                    remNode->left->father = aux;
-                }
-            }
-        }
-
-        if (remNode->father != NULL)
-        {
-            if (remNode->father->right == remNode)
-            {
-                remNode->father->right = aux;
-            }
-            else
-            {
-                remNode->father->left = aux;
-            }
-        }
-
-        if (remNode == source)
-        {
-            free(remNode);
-            *source = *aux;
-        }
-        else
-        {
-            free(remNode);
-        }
-        return 1;
-    }
+    return removeNodeByNode(source, remNode);
 }
 
 // transplant nodes
@@ -218,50 +226,51 @@ int transplantNodesByNodes(Node *source, Node *nodeReplaced, Node *nodeSwitch)
         return 0;
     }
 
-    if (nodeSwitch->right == NULL && nodeSwitch->left != NULL)
-    {
-        aux = nodeSwitch->left;
-        aux->father = nodeSwitch->father;
-    }
-    else if (nodeSwitch->right != NULL && nodeSwitch->left == NULL)
-    {
-        aux = nodeSwitch->right;
-        aux->father = nodeSwitch->father;
-    }
-    else if (nodeSwitch->right != NULL && nodeSwitch->left != NULL)
-    {
-        aux = nodeSwitch->right;
-        aux->father = nodeSwitch->father;
-        if (nodeSwitch->left != NULL)
-        {
-            if (aux->left != NULL)
-            {
-                insertNodeByNode(aux, nodeSwitch->left);
-            }
-            else
-            {
-                aux->left = nodeSwitch->left;
-                nodeSwitch->left->father = aux;
-            }
-        }
-    }
+    remoteNodeByNode(source, nodeSwitch, aux);
+    // if (nodeSwitch->right == NULL && nodeSwitch->left != NULL)
+    // {
+    //     aux = nodeSwitch->left;
+    //     aux->father = nodeSwitch->father;
+    // }
+    // else if (nodeSwitch->right != NULL && nodeSwitch->left == NULL)
+    // {
+    //     aux = nodeSwitch->right;
+    //     aux->father = nodeSwitch->father;
+    // }
+    // else if (nodeSwitch->right != NULL && nodeSwitch->left != NULL)
+    // {
+    //     aux = nodeSwitch->right;
+    //     aux->father = nodeSwitch->father;
+    //     if (nodeSwitch->left != NULL)
+    //     {
+    //         if (aux->left != NULL)
+    //         {
+    //             insertNodeByNode(aux, nodeSwitch->left);
+    //         }
+    //         else
+    //         {
+    //             aux->left = nodeSwitch->left;
+    //             nodeSwitch->left->father = aux;
+    //         }
+    //     }
+    // }
 
-    if (nodeSwitch->father != NULL)
-    {
-        if (nodeSwitch->father->right == nodeSwitch)
-        {
-            nodeSwitch->father->right = aux;
-        }
-        else
-        {
-            nodeSwitch->father->left = aux;
-        }
-    }
-
-    if (nodeSwitch == source)
-    {
-        *source = *aux;
-    }
+    // if (nodeSwitch->father != NULL)
+    // {
+    //     if (nodeSwitch->father->right == nodeSwitch)
+    //     {
+    //         nodeSwitch->father->right = aux;
+    //     }
+    //     else
+    //     {
+    //         nodeSwitch->father->left = aux;
+    //     }
+    // }
+    //
+    // if (nodeSwitch == source)
+    // {
+    //     *source = *aux;
+    // }
 
     nodeSwitch->left = nodeReplaced->left;
     nodeSwitch->right = nodeReplaced->right;
@@ -291,7 +300,6 @@ int transplantNodesByNodes(Node *source, Node *nodeReplaced, Node *nodeSwitch)
     {
         free(nodeReplaced);
         *source = *nodeSwitch;
-        printf("source - %d - %p\n", source->key, &source);
     }
     else
     {
@@ -354,9 +362,8 @@ int main()
     printInOrder(source);
     printf("\n");
 
-    removeNodeByInfo(source, 6);
-    // transplantNodesByInfo(source, 6, 9);
-    printf("source - %d - %p\n", source->key, &source);
+    // removeNodeByInfo(source, 6);
+    transplantNodesByInfo(source, 6, 9);
 
     printf("inOrder\n");
     printInOrder(source);

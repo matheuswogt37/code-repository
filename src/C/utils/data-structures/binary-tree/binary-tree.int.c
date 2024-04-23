@@ -108,32 +108,6 @@ Node *insertNodeByInfo(Node *source, int info)
     }
     return source;
 
-    /*
-    if (node->key > father->key)
-    {
-        if (father->right == NULL)
-        {
-            father->right = node;
-            node->father = father;
-        }
-        else
-        {
-            insertNodeByNode(father->right, node);
-        }
-    }
-    else
-    {
-        if (father->left == NULL)
-        {
-            father->left = node;
-            node->father = father;
-        }
-        else
-        {
-            insertNodeByNode(father->left, node);
-        }
-    }
-    */
 }
 
 // find father
@@ -232,11 +206,11 @@ int main()
 
     for (int i = 0; i < 5; i++)
     {
-        insertNodeByInfo(source, test[i]);
+        source = insertNodeByInfo(source, test[i]);
     }
 
-    // printInOrder(source);
-    printf("\n");
+    printInOrder(source);
+    printf("\n");   
 
     deleteNodeByNode(&source, searchNode(source, 6));
 

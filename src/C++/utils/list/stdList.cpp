@@ -15,21 +15,49 @@ class Num
         }
 };
 
-int main() {
-    std::list<Num*> objectList{new Num(1), new Num(7), new Num(3), new Num(91), };
-    std::list<int> intList{1, 5, 2, 8};
+void printNumList(std::list<Num*> list) {
+    std::cout << "object list" << "\n";
+    for (auto i : list) {
+        std::cout << i->getNum() << ' ';
+    }
+    std::cout << "\n\n";
+}
 
-    std::cout << "object list" << std::endl;
+void printIntLis(std::list<int> list) {
+    std::cout << "int list" << "\n";
+    for (auto i : list) {
+        std::cout << i << ' ';
+    }
+    std::cout << "\n\n";
+}
+
+int main() {
+    std::list<Num*> objectList{new Num(1), new Num(7), new Num(3), new Num(91)};
+    std::list<Num*>::iterator objectIt;
+    std::list<int> intList{1, 5, 2, 8};
+    std::list<int>::iterator intIt;
+
+
+    std::cout << "object list" << "\n";
     for (auto i : objectList) {
         std::cout << i->getNum() << ' ';
     }
-    std::cout << std::endl << std::endl;
+    std::cout << "\n\n";
 
-    std::cout << "int list" << std::endl;
+    std::cout << "int list" << "\n";
     for (auto i : intList) {
         std::cout << i << ' ';
     }
-    std::cout << std::endl << std::endl;
+    std::cout << "\n\n";
+
+    // insert
+    objectIt = objectList.end();
+    objectList.insert(objectIt, new Num(70));
+
+    intList.insert(intList.begin(), 45);
+
+    std::cout << "Inserts" << std::endl;
+
 
     return 0;
 }

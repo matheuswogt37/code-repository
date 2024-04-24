@@ -41,6 +41,38 @@ void printIntLis(std::list<int> list)
     std::cout << "\n\n";
 }
 
+void removeFromNumList(std::list<Num *> *list, Num *rem) {
+    std::list<Num *>::iterator objectIt;
+    objectIt = std::find(list->begin(), list->end(), rem);
+    objectIt = list->erase(objectIt);
+}
+
+void removeFromIntList(std::list<int> *list, int num) {
+    std::list<int>::iterator intIt;
+    intIt = std::find(list->begin(), list->end(), num);
+    intIt = list->erase(intIt);
+}
+
+void forEachNumList(std::list<Num *> list)
+{
+    std::list<Num *>::iterator it;
+    for (it = list.begin(); it != list.end(); it++)
+    {
+        std::cout << (*it)->getNum() << " ";
+    }
+    std::cout << std::endl;
+}
+
+void forEachIntList(std::list<int> list)
+{
+    std::list<int>::iterator it;
+    for (it = list.begin(); it != list.end(); it++)
+    {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+}
+
 int main()
 {
     std::list<Num *> objectList{new Num(1), new Num(7), new Num(3), new Num(91)};
@@ -74,16 +106,16 @@ int main()
 
     // remove searched item
     // num = 70 | line 56
-    objectIt = std::find(objectList.begin(), objectList.end(), num);
-    objectIt = objectList.erase(objectIt);
-
-    intIt = std::find(intList.begin(), intList.end(), 45);
-    intIt = intList.erase(intIt);
-
 
     std::cout << "Remove" << std::endl;
+    removeFromNumList(&objectList, num);
+    removeFromIntList(&intList, 45);
     printNumList(objectList);
     printIntLis(intList);
+
+    std::cout << "For each" << std::endl;
+    forEachNumList(objectList);
+    forEachIntList(intList);
 
     return 0;
 }

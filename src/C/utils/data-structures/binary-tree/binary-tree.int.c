@@ -110,12 +110,12 @@ Node *findFather(Node *source, Node *node)
 // AVL
 
 // right rotation
-Node *rightRotation(Node **realSource, Node *oldNode, Node *newNode)
+void rightRotation(Node **realSource, Node **oldNode, Node *newNode)
 {
-    Node *father = findFather(*realSource, oldNode);
+    Node *father = findFather(*realSource, (*oldNode));
     if (father != NULL) // oldNode->father->child = newNode
     {
-        if (father->left = oldNode)
+        if (father->left == *oldNode)
         {
             father->left = newNode;
         }
@@ -125,23 +125,23 @@ Node *rightRotation(Node **realSource, Node *oldNode, Node *newNode)
         }
     }
 
-    oldNode->right = newNode->left;
-    newNode->left = oldNode;
+    (*oldNode)->left = newNode->right;
+    newNode->right = (*oldNode);
 
-    if (oldNode == *realSource)
-    {
+    if (*oldNode == *realSource) {
         *realSource = newNode;
+        *oldNode = *realSource;
     }
-    return *realSource;
+
 }
 
 // left rotation
-Node *leftRotation(Node **realSource, Node *oldNode, Node *newNode)
+void leftRotation(Node **realSource, Node **oldNode, Node *newNode)
 {
-    Node *father = findFather(*realSource, oldNode);
+    Node *father = findFather(*realSource, (*oldNode));
     if (father != NULL) // oldNode->father->child = newNode
     {
-        if (father->left = oldNode)
+        if (father->left == *oldNode)
         {
             father->left = newNode;
         }
@@ -151,39 +151,39 @@ Node *leftRotation(Node **realSource, Node *oldNode, Node *newNode)
         }
     }
 
-    oldNode->left = newNode->right;
-    newNode->right = oldNode;
+    (*oldNode)->right = newNode->left;
+    newNode->left = *oldNode;
 
-    if (oldNode == *realSource)
+    if (*oldNode == *realSource)
     {
         *realSource = newNode;
+        *oldNode = *realSource;
     }
-    return *realSource;
 }
 // left left case
-void LLCase(Node **realSource, Node *oldNode, Node *newNode)
-{
-    leftRotation(realSource, oldNode, newNode);
-}
-
-// right right case
-void RRCase(Node **realSource, Node *oldNode, Node *newNode)
+void LLCase(Node **realSource, Node **oldNode, Node *newNode)
 {
     rightRotation(realSource, oldNode, newNode);
 }
 
-// left right case
-void LRCase(Node **realSource, Node *oldNode, Node *newNode)
+// right right case
+void RRCase(Node **realSource, Node **oldNode, Node *newNode)
 {
-    leftRotation(realSource, newNode, newNode->right);
-    rightRotation(realSource, oldNode, oldNode->left);
+    leftRotation(realSource, oldNode, newNode);
+}
+
+// left right case
+void LRCase(Node **realSource, Node **oldNode, Node *newNode)
+{
+    leftRotation(realSource, &newNode, newNode->right);
+    rightRotation(realSource, oldNode, (*oldNode)->left);
 }
 
 // right left case
-void RLCase(Node **realSource, Node *oldNode, Node *newNode)
+void RLCase(Node **realSource, Node **oldNode, Node *newNode)
 {
-    rightRotation(realSource, newNode, newNode->left);
-    leftRotation(realSource, oldNode, oldNode->right);
+    rightRotation(realSource, &newNode, newNode->left);
+    leftRotation(realSource, oldNode, (*oldNode)->right);
 }
 
 // calc only height [return height, recursive function]
@@ -253,40 +253,40 @@ void calcBalanceFactor(Node **RealSource, Node *source)
         if (tempLHeight > tempRHeight)
         {
             // case right - left
-            RLCase(RealSource, source, source->right);
+            RLCase(RealSource, &source, source->right);
         }
         else
         {
             // case right - right
-            RRCase(RealSource, source, source->right);
+            RRCase(RealSource, &source, source->right);
         }
     }
     else if (balanceFactor > 1)
     {
         // when right - ? give priority to source->left greater height if (source->left->left != NULL) // calc souce->right->left height
         {
-            tempLHeight = calcGreaterHeight(source->left->left);
+            tempLHeight = calcOnlyHeight(source->left->left);
         }
         if (source->left->right != NULL) // calc souce->right->right height
         {
-            tempLHeight = calcGreaterHeight(source->left->right);
+            tempLHeight = calcOnlyHeight(source->left->right);
         }
         if (tempRHeight > tempLHeight)
         {
             // case left - right
-            LRCase(RealSource, source, source->left);
+            LRCase(RealSource, &source, source->left);
         }
         else
         {
             // case left - left
-            LLCase(RealSource, source, source->left);
+            LLCase(RealSource, &source, source->left);
         }
     }
     if (source->left != NULL) {
         calcBalanceFactor(RealSource, source->left);
     }
     if (source->right != NULL) {
-    calcBalanceFactor(RealSource, source->right);
+        calcBalanceFactor(RealSource, source->right);
     }
 }
 
@@ -414,7 +414,6 @@ int main()
     int test[] = {5, 9, 8, 4, 10};
 
     Node *source = createNode(6);
-    int *height = 0;
 
     for (int i = 0; i < 5; i++)
     {
@@ -424,8 +423,12 @@ int main()
     source = insertNodeByInfo(source, 3);
     source = insertNodeByInfo(source, 2);
     source = insertNodeByInfo(source, 1);
+
+
     printf("\nsource before calc- %i\n", source->key);
     calcBalanceFactor(&source, source);
+
+    // LLCase(&source, &source, source->left);
 
     printInOrder(source);
     printf("\nsource after calc- %i\n", source->key);

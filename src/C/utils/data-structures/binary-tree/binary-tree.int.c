@@ -428,12 +428,15 @@ int main()
     printf("\nsource before calc- %i\n", source->key);
     calcBalanceFactor(&source, source);
 
-    // LLCase(&source, &source, source->left);
+
 
     printInOrder(source);
     printf("\nsource after calc- %i\n", source->key);
 
+    deleteNodeByNode(&source, searchNode(&source, 5));
+
     printf("terminado\n");
 
+    freeTree(source);
     return 0;
 }

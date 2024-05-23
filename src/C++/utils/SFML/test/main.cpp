@@ -1,31 +1,17 @@
+//* other libs
+#include <iostream>
+
+//* sfml libs
 #include <SFML/Graphics.hpp>
+#include <SFML/OpenGL.hpp>
 
-void playGame(sf::RenderWindow &window)
-{
-    sf::Event event;
-    sf::RectangleShape rectShape(sf::Vector2f(100.f, 150.f));
-    while (window.pollEvent(event))
-    {
-        if (event.type == sf::Event::Closed)
-        {
-            window.close();
-        }
-    }
+//* my libs
+#include "Game/Game.hpp"
 
-    window.clear();
-    window.draw(rectShape);
-    window.display();
-}
+int main() {
+    Game game;
 
-int main()
-{
-    sf::RenderWindow window;
-    window.create(sf::VideoMode(1280, 720), "CasteloVania");
-
-    while (window.isOpen())
-    {
-        playGame(window);
-    }
+    game.run();
 
     return 0;
 }

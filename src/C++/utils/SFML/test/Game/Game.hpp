@@ -8,10 +8,15 @@
 //* other libs
 #include <iostream>
 
+//* definitions
+#define VIEW_H 480.0f
+
 class Game {
    private:
     sf::RenderWindow window;
+    sf::View view;
     Player p1;
+    void resizeView();
     void processEvents();
     void update(sf::Time deltaTime);
     void render();

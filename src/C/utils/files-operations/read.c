@@ -14,7 +14,7 @@ int main() {
 
         do {
             ch = fgetc(file_ptr);
-            printf("%c", ch);           
+            printf("%c", ch);
         } while (ch != EOF);
     }
 

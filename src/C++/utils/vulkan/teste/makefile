@@ -1,14 +1,17 @@
 LIB_FLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
-.PHONY: run clean test
+.PHONY: test clear run clean
 
 
-test: compile run clean
+test: clear compile run clean
+
+clear:
+	@clear
 
 compile: main.cpp
-	g++ main.cpp -o main.o ${LIB_FLAGS}
+	@g++ main.cpp -o main.o ${LIB_FLAGS}
 	
 run: compile
-	./main.o
+	@./main.o
 
 clean:
-	rm -r ./*.o
+	@rm -r ./*.o

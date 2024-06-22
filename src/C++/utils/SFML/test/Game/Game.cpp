@@ -1,13 +1,26 @@
 #include "Game.hpp"
 
-Game::Game() : window(sf::VideoMode(980, 480), "CasteloVania") {
+Game::Game() : window(sf::VideoMode(980, 480), "CasteloVania"), view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(980.0f, 480.0f)) {
     // load player resources
-    p1.loadTexture("assets/alucardSheetSprite.png");
+    p1.loadTexture("assets/richter-belmont-with-animation.png");
     p1.loadAnim();
 
-    //p1.setSpriteTex(p1Tex);
-    p1.setSpritePos(100.f, 150.f);
-    p1.setSpriteScale(0.25f, 0.25f);
+    
+    //* player sprite origin
+    p1.setSpriteOriginCenter();
+
+    // p1.setSpriteTex(p1Tex);
+    //* set player initial position
+    //! default
+    // p1.setSpritePos(100.f, 150.f);
+    //! zero coords
+    p1.setSpritePos(0.f, 0.f);
+    //! middle screen
+
+
+    p1.setSpriteScale(0.5f, 0.5f);
+
+    
 }
 
 Game::~Game() {}
@@ -33,30 +46,18 @@ void Game::processEvents() {
 }
 
 void Game::update(sf::Time deltaTime) {
-    sf::Vector2f mov(0.f, 0.f);
-    if (this->p1.getMUp()) {
-        mov.y += -100.f;
-    }
-    if (this->p1.getMDown()) {
-        mov.y += 100.f;
-    }
-    if (this->p1.getMLeft()) {
-        mov.x += -100.f;
-        this->p1.setSpriteScale(-0.25f, 0.25f);
-    }
-    if (this->p1.getMRight()) {
-        mov.x += 100.f;
-        this->p1.setSpriteScale(0.25f, 0.25f);
-    }
 
     this->p1.updateSprite(deltaTime.asSeconds());
-    
-    this->p1.setSpriteMove(mov * deltaTime.asSeconds());
 }
 
 void Game::render() {
     this->window.clear();
-    this->window.draw(this->p1.getSprite());
+    // this->view.setCenter(this->p1.getPos());
+    this->window.setView(this->view);
+    this->p1.draw(&this->window);
+    //* output coords
+    std::cout << "(" << this->p1.getPos().x << ", " << this->p1.getPos().y << ")" << std::endl;
+    //* end output coords
     this->window.display();
 }
 

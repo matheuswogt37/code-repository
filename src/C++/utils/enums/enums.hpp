@@ -1,0 +1,34 @@
+#ifndef enums_hpp
+#define enums_hpp
+
+enum ESTADOS {
+    ACRE,
+    ALAGOAS,
+    AMAPA,
+    AMAZONAS,
+    BAHIA,
+    CEARA,
+    DISTRITOFEDERAL,
+    ESPIRITOSANTO,
+    GOIAS,
+    MARANHAO,
+    MATOGROSSO,
+    MATOGROSSODOSUL,
+    MINASGERAIS,
+    PARA,
+    PARAIBA,
+    PARANA,
+    PERNAMBUCO,
+    PIAUI,
+    RIOGRANDEDONORTE,
+    RIOGRANDEDOSUL,
+    RIOJANEIRO,
+    RONDONIA,
+    RORAIMA,
+    SANTACATARINA,
+    SAOPAULO,
+    SERGIPE,
+    TORIXOREU
+};
+
+#endif

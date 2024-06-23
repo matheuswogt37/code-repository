@@ -4,7 +4,7 @@
 
 #include "utils/file.c"
 #include "utils/freqTable.c"    
-
+#include "utils/freqTree.c"
 
 //* debug tools
 // printf("\tdebug\t aux->let = %c == %c \n", aux->let, ch); //! DEBUG
@@ -13,8 +13,11 @@ int main(int argc, char **argv) {
     //* var delcarations
     FILE *read_f;
     FreqNode **root_freq;
-    (*root_freq) = NULL;
+    FreqTree **root_tree;
     char ch;
+    
+    (*root_freq) = NULL;
+    
     
     //* read files
 
@@ -41,13 +44,17 @@ int main(int argc, char **argv) {
     
 
     //* frequency tree
-
+    (*root_tree) = allocFreqTree();
+    initFreqTree(root_tree, (*root_freq));
 
     //* write encrypted file
 
     //* decrypt encrypted file
 
     //* write decrypted file
+
+    //* free's
+    free(*root_freq);
 
     return EXIT_SUCCESS;
 };

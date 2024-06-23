@@ -43,7 +43,7 @@ void freeLinkedList(LinkedList *queue) {
     free(queue);
 }
 
-void insertNodeLinkedList(LinkedList *queue, LinkedNode *pivo, NodeTree *data) {
+void insertNodeLinkedList(LinkedList *queue, NodeTree *data) {
     LinkedNode *node, *aux;
     node = allocNode(data);
     if (NULL == queue->head) {

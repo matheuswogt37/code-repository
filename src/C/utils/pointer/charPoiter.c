@@ -25,10 +25,12 @@ int main() {
     for (int i = 0; i < qtdCh1; i++) {
         printf("%c", ch1[i]);
     }
+    printf("\nsizeof(ch1) = %li\n", sizeof(ch1));
     printf("\n");
     for (int i = 0; i < qtdCh2; i++) {
         printf("%c", ch2[i]);
     }
+    printf("\nsizeof(ch2) = %li\n", sizeof(ch2));
     printf("\n");
 
     free(ch1);

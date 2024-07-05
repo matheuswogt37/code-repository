@@ -26,12 +26,15 @@ NodeTree *allocNodeTree(char state, char let, int freq) {
 }
 
 FreqTree *allocFreqTree() {
-    FreqTree *tree;
-    tree = (FreqTree *) malloc(sizeof(FreqTree));
-    if (NULL != tree) {
-        tree->list = allocLinkedList();
-        tree->root = NULL;
+    FreqTree *node;
+    node = (FreqTree *) malloc(sizeof(FreqTree));
+    if (NULL != node) {
+        node->list = allocLinkedList();
+        node->root = NULL;
+    } else {
+        return NULL;
     }
+    return node;
 }
 
 void freeFreqTreeRecursive(NodeTree *root) {
@@ -77,6 +80,7 @@ void initFreqTreeList(FreqTree **tree, FreqNode *table) {
     auxTable = table;
     while (NULL != auxTable) {
         createFreqTreeListNode(tree, auxTable, true, NULL, NULL);
+        auxTable = auxTable->next;
     }
 }
 
@@ -96,17 +100,13 @@ void populateFreqTree(FreqTree **tree) {
 
     //* while list had more than one element    
     while (NULL != auxList->next) {
-        //* remove the first two elements
-        auxListNext = auxList->next;
-        remNodeLinkedList((*tree)->list, auxList);
-        remNodeLinkedList((*tree)->list, auxListNext);
-
         //* create a father node and insert
+        auxListNext = auxList->next;
         insertIntoFreqTreeList(tree, auxList, auxListNext);    
 
-        //* free on list elements that will not be used anymore, ONLY THE LIST NODE NOT THE FREQ NODE
-        free(auxList);
-        free(auxListNext);
+        //* remove the first two elements
+        remNodeLinkedList((*tree)->list, auxList);
+        remNodeLinkedList((*tree)->list, auxListNext);
 
         //* reset the auxList to first element
         auxList = (*tree)->list->head;
@@ -119,5 +119,5 @@ void initFreqTree(FreqTree **tree, FreqNode *table) {
     //* set freq tree list
     initFreqTreeList(tree, table);
     //* populate freq tree
-    
+    populateFreqTree(tree);
 }

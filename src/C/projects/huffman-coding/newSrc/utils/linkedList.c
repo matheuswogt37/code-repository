@@ -60,7 +60,9 @@ void insertNodeLinkedList(LinkedList *queue, NodeTree *data) {
             while (NULL != aux->next && data->freq >= aux->next->nodeTree->freq) {
                 aux = aux->next;
             }
-            aux->next->prev = node;
+            if (NULL != aux->next) {
+                aux->next->prev = node;
+            }
             node->next = aux->next;
             node->prev = aux;
             aux->next = node;
@@ -70,15 +72,16 @@ void insertNodeLinkedList(LinkedList *queue, NodeTree *data) {
 
 void remNodeLinkedList(LinkedList *queue, LinkedNode *node) {
     LinkedNode *aux;
-    
-    node->next->prev = node->prev;
-    node->prev->next = node->next;
 
     if (node == queue->head) {
         queue->head = node->next;
+    } else {
+        node->prev->next = node->next;
     }
     if (node == queue->tail) {
         queue->tail = node->prev;
+    } else {
+        node->next->prev = node->prev;
     }
 
     free(node);

@@ -12,18 +12,18 @@
 int main(int argc, char **argv) {
     //* var delcarations
     FILE *read_f;
-    FreqNode **root_freq;
-    FreqTree **root_tree;
+    FreqNode *root_freq;
+    FreqTree *root_tree;
     char ch;
     
-    (*root_freq) = NULL;
-    
+    root_freq = NULL;
+
     
     //* read files
 
-    read_f = fopen(getReadName(argv), "r");
+    // read_f = fopen(getReadName(argv), "r");
     //todo debug only
-    // read_f = fopen("./files/testText", "r");
+    read_f = fopen("./files/testText", "r");
 
 
     if (NULL == read_f) {
@@ -34,18 +34,21 @@ int main(int argc, char **argv) {
 
     //* frequency table
     for (ch = fgetc(read_f); EOF != ch; ch = fgetc(read_f)) {
-        insertFreqNode(root_freq, ch);
+        insertFreqNode((&root_freq), ch);
+        printf("%c", ch);//! DEBUG
     }
-    balanceFreqTable(root_freq);
+    balanceFreqTable((&root_freq));
 
     //todo debug only
-    printFreqTable(root_freq);
+    // printFreqTable((&root_freq));
     // printf("\t\t chegou aqui \t\t");
     
-
     //* frequency tree
-    (*root_tree) = allocFreqTree();
-    initFreqTree(root_tree, (*root_freq));
+    // printf("funciona\n"); //! DEBUG
+    root_tree = allocFreqTree();
+    initFreqTree((&root_tree), root_freq);
+
+    //* mount code table
 
     //* write encrypted file
 
@@ -54,7 +57,7 @@ int main(int argc, char **argv) {
     //* write decrypted file
 
     //* free's
-    free(*root_freq);
+    free(root_tree);
 
     return EXIT_SUCCESS;
 };

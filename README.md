@@ -1,2 +1,2 @@
-# C-tutorial
-tutorial for C programming language
+# code-repository
+repository to store some stuffs bruh

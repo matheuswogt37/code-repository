@@ -1,9 +1,3 @@
-<style>
-    .pink {
-        color: #e83e8c;
-    }
-</style>
-
 ## Descrição
 Nesta atividade, você irá implementar um programa em C que simula o crescimento de colônias de bactérias utilizando conceitos de **programação concorrente** com threads e mecanismos de travamento (mutexes). O objetivo é criar uma situação que permita a ocorrência de **impasse (deadlock)**, mas que seja prevenida por meio de estratégias de gerenciamento de recursos e coordenação de threads.
 
@@ -60,20 +54,21 @@ Criar um programa que permita a ocorrência de um impasse (deadlock) inicialment
 ## Requisitos do Programa
 
 1. Parâmetros de Entrada:
-    - <span class="pink" >População inicial P0</span>: valor inicial para a população de cada colônia.
-    - <span class="pink" >Taxa de crescimento r</span>: taxa de crescimento para cada colônia.
-    - <span class="pink" >Tempo total T</span>: o tempo total a ser simulado.
-    - <span class="pink" >Número de colônias</span>: total de threads representando colônias.
-    - <span class="pink" >Número total de recursos</span>: quantidade de recursos compartilhados de cada tipo.
+    - $\color{#e83e8c}\textsf{{População inicial P0}}$: valor inicial para a população de cada colônia.
+    - $\color{#e83e8c}\textsf{{População inicial P0}}$: valor inicial para a população de cada colônia.
+    - $\color{#e83e8c}\textsf{{Taxa de crescimento r}}$: taxa de crescimento para cada colônia.
+    - $\color{#e83e8c}\textsf{{Tempo total T}}$: o tempo total a ser simulado.
+    - $\color{#e83e8c}\textsf{{Número de colônias}}$: total de threads representando colônias.
+    - $\color{#e83e8c}\textsf{{Número total de recursos}}$: quantidade de recursos compartilhados de cada tipo.
 
 2. Recursos Compartilhados:
     - Crie dois arrays de mutexes para representar os recursos:
-        - <span class="pink" >recursosA</span>: um array de mutexes representando recursos do tipo A.
-        - <span class="pink" >recursosB</span>: um array de mutexes representando recursos do tipo B.
+        - $\color{#e83e8c}\textsf{{recursosA}}$: um array de mutexes representando recursos do tipo A.
+        - $\color{#e83e8c}\textsf{{recursosB}}$: um array de mutexes representando recursos do tipo B.
 
 3. Ordem de Aquisição Inicial (permitindo deadlock):
-    - Algumas threads devem tentar obter <span class="pink" >recursosA</span> antes de <span class="pink" >recursosB</span>.
-    - Outras threads devem tentar obter <span class="pink" >recursosB</span> antes de <span class="pink" >recursosA</span>.
+    - Algumas threads devem tentar obter $\color{#e83e8c}\textsf{{recursosA}}$ antes de $\color{#e83e8c}\textsf{{recursosB}}$.
+    - Outras threads devem tentar obter $\color{#e83e8c}\textsf{{recursosB}}$ antes de $\color{#e83e8c}\textsf{{recursosA}}$.
 
 4. Implementação de Estratégias de Prevenção:
     - Após permitir que o impasse ocorra, implemente uma das seguintes estratégias:

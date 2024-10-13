@@ -55,7 +55,6 @@ Criar um programa que permita a ocorrência de um impasse (deadlock) inicialment
 
 1. Parâmetros de Entrada:
     - $\color{#e83e8c}\textsf{{População inicial P0}}$: valor inicial para a população de cada colônia.
-    - $\color{#e83e8c}\textsf{{População inicial P0}}$: valor inicial para a população de cada colônia.
     - $\color{#e83e8c}\textsf{{Taxa de crescimento r}}$: taxa de crescimento para cada colônia.
     - $\color{#e83e8c}\textsf{{Tempo total T}}$: o tempo total a ser simulado.
     - $\color{#e83e8c}\textsf{{Número de colônias}}$: total de threads representando colônias.

@@ -189,14 +189,35 @@ id 4 init population 10                 final population 220264
 End...
 ```
 
+## Instruções de compilação e execução
+
+Para compilar usar o seguinte comando em terminal:
+
+```bash
+gcc -o {file} {file}.c -pthread -lm
+```
+
+Para então executar como:
+
+```bash
+./{file} {FLAGS}
+```
+
+Para obter informações sobre quais flags devem ser usadas e como usar a flag **_-h_**
+
+```bash
+./{file} -h
+```
+
 ## Testes
 
 Seguintes testes foram realizados usando os dois arquivos: _growth_simulation_deadlock.c_ e _growth_simulation_consistent_order.c_. Para os testes não foram utilizados **sleep's** dado que o proprósito é analisar o desempenho. \
-Para medir o desempenho vai ser utilizado o comando *time*
-| Parâmetros                      | deadlock.c                                                                                                                                                                | consistent_order.c                                                                                                                    |
+Para medir o desempenho vai ser utilizado o comando _time_
+| Parâmetros | deadlock.c | consistent_order.c |
 |---------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| -pi 10 -r 2 -t 5 -nc 5 -nr 1    | **ocorreu deadlock**                                                                                                                                                      | 0.00user 0.00system 0:00.00elapsed 133%CPU (0avgtext+0avgdata 2432maxresident)k 0inputs+0outputs (0major+121minor)pagefaults 0swaps   |
+| -pi 10 -r 2 -t 5 -nc 5 -nr 1 | **ocorreu deadlock** | 0.00user 0.00system 0:00.00elapsed 133%CPU (0avgtext+0avgdata 2432maxresident)k 0inputs+0outputs (0major+121minor)pagefaults 0swaps |
 | -pi 10 -r 2 -t 5 -nc 1000 -nr 5 | **5 em cada 10 ocorria deadlock** 0.00user 0.03system 0:00.03elapsed 120%CPU (0avgtext+0avgdata 10240maxresident)k 0inputs+0outputs (0major+2197minor)pagefaults 0swaps | 0.00user 0.03system 0:00.03elapsed 110%CPU (0avgtext+0avgdata 10112maxresident)k 0inputs+0outputs (0major+2195minor)pagefaults 0swaps |
 
 ## Considerações finais
+
 A aplicação de prevenção é muito importante para que o sistema em sí não trave, principalmente quando há muitos consumidores e poucos recursos o deadlock é mais passível de ocorrer, e quando ocorrer especificamente nas soluções apresentadas por este projeto é necessário intervenção para que o programa pare de executar assim liberando recursos (memória e os próprios recursos utilizados)

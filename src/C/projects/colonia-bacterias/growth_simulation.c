@@ -29,26 +29,28 @@ void _help() {
     Use to simulate bacterium colonium growth\n\
     \n\
     \tObrigatory params:\n\
-    -pi\t\tSet initial population\n\
-    -r\t\tSet growth rate\n\
-    -t\t\tSet simulation time\n\
-    -nc\t\tSet colonies quantity\n\
-    -nr\t\tSet resources quantity\n\
-    -h,\t--help\tPrint help message\n\
-    \n\
-    \tOptional params:\t\
-    -f [FILE]\t\tWrite the output in a [FILE]\n");
+    -pi [NUMBER]\t\tSet initial population\n\
+    -r [NUMBER]\t\tSet growth rate\n\
+    -t [NUMBER]\t\tSet simulation time\n\
+    -nc [NUMBER]\t\tSet colonies quantity\n\
+    -nr [NUMBER]\t\tSet resources quantity\n\
+    -h,\t--help\tPrint help message\n");
 }
 
 // check if obrigratory params are passed and assigned, if ok then procced, if not then return error and exit
 int checkParams(int argc, char **argv, int *pi, float *r, int *t, int *nc, int *nr, int *file) {
     int val[5];  // "boolean" if corresponding param were passed
-    int i;
+    int i, initI;
     for (i = 0; i < 5; i++) {
         val[i] = 0;  // default value is "false" (0 because use int)
     }
 
-    for (i = 1; i < argc; i++) {
+    if (strcmp(argv[i], "time") == 0) {
+        initI = 2;
+    } else {
+        initI = 1;
+    }
+    for (i = initI; i < argc; i++) {
         if (strcmp(argv[i], "-pi") == 0) {  // check if is this param
             i++;                            // sum because need to get the param value
             if (i < argc) {                 // if the param value exist
@@ -90,83 +92,46 @@ int checkParams(int argc, char **argv, int *pi, float *r, int *t, int *nc, int *
 
 // PARAMS FUNCTIONS END
 void *growth(void *d) {
-    DataThr *data = (DataThr *)d;  // get the data struct from void param, this is a litte confusing so i explain this line on report
+    DataThr *data = (DataThr *)d;  // get the data struct from void param, this is a litte confusing so i explain this line on report (relatorio)
     int cond = 1;                  // if the lock occured normaly, if not enter the queueMutex
     int indexSpace, indexFood;
 
-    if (0 == (data->id % 2)) {
-        // get resource space
-        while (1 == cond) {  // while not get space continue trying
-            for (int i = 0; i < nr; i++) {
-                if (0 == pthread_mutex_trylock(&resSpace[i])) {   // try lock into this mutex, if ok then enter the if, if not then continue until check all the mutexes
-                    sleep(rand() % 5 + 2);                                                                         // sleep random betweeen 2 and 7
-                    printf("id %d get %d space\n", data->id, i);  // print to know what is going on
-                    indexSpace = i;
-                    cond = 0;
-                    break;
-                }
-            }
-            if (1 == cond) {                                       // enter mutex queueSpace
-                printf("id %d enter in queue space\n", data->id);  // print to know what is going on
-                pthread_mutex_lock(&waitQueueSpace);
+    // get resource space
+    while (1 == cond) {  // while not get space continue trying
+        for (int i = 0; i < nr; i++) {
+            if (0 == pthread_mutex_trylock(&resSpace[i])) {   // try lock into this mutex, if ok then enter the if, if not then continue until check all the mutexes
+                // sleep(rand() % 5 + 2);                        // sleep random betweeen 2 and 7
+                printf("id %d get %d space\n", data->id, i);  // print to know what is going on
+                indexSpace = i;
+                cond = 0;
+                break;
             }
         }
-        // get resource food
-        cond = 1;
-        while (1 == cond) {
-            for (int i = 0; i < nr; i++) {
-                if (0 == pthread_mutex_trylock(&resFood[i])) {
-                        sleep(rand() % 5 + 2);                                                                         // sleep random betweeen 2 and 7
-                    printf("id %d get %d food\n", data->id, i);  // print to know what is going on
-                    indexFood = i;
-                    cond = 0;
-                    break;
-                }
-            }
-            if (1 == cond) {
-                printf("id %d enter in queue food\n", data->id);  // print to know what is going on
-                pthread_mutex_lock(&waitQueueFood);
+        if (1 == cond) {                                       // enter mutex queueSpace
+            printf("id %d enter in queue space\n", data->id);  // print to know what is going on
+            pthread_mutex_lock(&waitQueueSpace);
+        }
+    }
+    // get resource food
+    cond = 1;
+    while (1 == cond) {
+        for (int i = 0; i < nr; i++) {
+            if (0 == pthread_mutex_trylock(&resFood[i])) {
+                // sleep(rand() % 5 + 2);                       // sleep random betweeen 2 and 7
+                printf("id %d get %d food\n", data->id, i);  // print to know what is going on
+                indexFood = i;
+                cond = 0;
+                break;
             }
         }
-    } else {
-        // get resource food
-        while (1 == cond) {
-            for (int i = 0; i < nr; i++) {
-                if (0 == pthread_mutex_trylock(&resFood[i])) {
-                        sleep(rand() % 5 + 2);                                                                         // sleep random betweeen 2 and 7
-                    printf("id %d get %d food\n", data->id, i);  // print to know what is going on
-                    indexFood = i;
-                    cond = 0;
-                    break;
-                }
-            }
-            if (1 == cond) {
-                printf("id %d enter in queue food\n", data->id);  // print to know what is going on
-                pthread_mutex_lock(&waitQueueFood);
-            }
-        }
-        // get resource space
-        cond = 1;
-        while (1 == cond) {  // while not get space continue trying
-            for (int i = 0; i < nr; i++) {
-                if (0 == pthread_mutex_trylock(&resSpace[i])) {   // try lock into this mutex, if ok then enter the if, if not then continue until check all the mutexes
-                    sleep(rand() % 5 + 2);                                                                         // sleep random betweeen 2 and 7
-                    printf("id %d get %d space\n", data->id, i);  // print to know what is going on
-                    indexSpace = i;
-                    cond = 0;
-                    break;
-                }
-            }
-            if (1 == cond) {                                       // enter mutex queueSpace
-                printf("id %d enter in queue space\n", data->id);  // print to know what is going on
-                pthread_mutex_lock(&waitQueueSpace);
-            }
+        if (1 == cond) {
+            printf("id %d enter in queue food\n", data->id);  // print to know what is going on
+            pthread_mutex_lock(&waitQueueFood);
         }
     }
 
     // now make the equation
-    data->population *= exp((r * t));                                                              // calculate the new population
-    sleep(rand() % 5 + 2);                                                                         // sleep random betweeen 2 and 7
+    data->population *= exp((r * t));                                                              // calculate the new populationgrowth_simulation
     printf("id %d init population %d \t\tfinal population %d\n", data->id, pi, data->population);  // print to know what is going on
     // unlock resources
     pthread_mutex_unlock(&resSpace[indexSpace]);
@@ -181,7 +146,7 @@ void *growth(void *d) {
 
 int main(int argc, char **argv) {
     int status, ifFile;
-    DataThr **threadsData, *aux, *auxTwo;
+    DataThr **threadsData; // pointer pointer is used like a array of pointers, and using array of pointers because its a array of structures (this case the sctruct DataThr)
     pthread_t *threads;
     pthread_attr_t attr;
 

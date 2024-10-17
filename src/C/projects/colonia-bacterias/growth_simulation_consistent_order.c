@@ -96,73 +96,37 @@ void *growth(void *d) {
     int cond = 1;                  // if the lock occured normaly, if not enter the queueMutex
     int indexSpace, indexFood;
 
-    if (0 == (data->id % 2)) {
-        // get resource space
-        while (1 == cond) {  // while not get space continue trying
-            for (int i = 0; i < nr; i++) {
-                if (0 == pthread_mutex_trylock(&resSpace[i])) {   // try lock into this mutex, if ok then enter the if, if not then continue until check all the mutexes
-                    // sleep(rand() % 5 + 2);                        // sleep random betweeen 2 and 7
-                    printf("id %d get %d space\n", data->id, i);  // print to know what is going on
-                    indexSpace = i;
-                    cond = 0;
-                    break;
-                }
-            }
-            if (1 == cond) {                                       // enter mutex queueSpace
-                printf("id %d enter in queue space\n", data->id);  // print to know what is going on
-                pthread_mutex_lock(&waitQueueSpace);
+    // get resource space
+    while (1 == cond) {  // while not get space continue trying
+        for (int i = 0; i < nr; i++) {
+            if (0 == pthread_mutex_trylock(&resSpace[i])) {   // try lock into this mutex, if ok then enter the if, if not then continue until check all the mutexes
+                // sleep(rand() % 5 + 2);                        // sleep random betweeen 2 and 7
+                printf("id %d get %d space\n", data->id, i);  // print to know what is going on
+                indexSpace = i;
+                cond = 0;
+                break;
             }
         }
-        // get resource food
-        cond = 1;
-        while (1 == cond) {
-            for (int i = 0; i < nr; i++) {
-                if (0 == pthread_mutex_trylock(&resFood[i])) {
-                    // sleep(rand() % 5 + 2);                       // sleep random betweeen 2 and 7
-                    printf("id %d get %d food\n", data->id, i);  // print to know what is going on
-                    indexFood = i;
-                    cond = 0;
-                    break;
-                }
-            }
-            if (1 == cond) {
-                printf("id %d enter in queue food\n", data->id);  // print to know what is going on
-                pthread_mutex_lock(&waitQueueFood);
+        if (1 == cond) {                                       // enter mutex queueSpace
+            printf("id %d enter in queue space\n", data->id);  // print to know what is going on
+            pthread_mutex_lock(&waitQueueSpace);
+        }
+    }
+    // get resource food
+    cond = 1;
+    while (1 == cond) {
+        for (int i = 0; i < nr; i++) {
+            if (0 == pthread_mutex_trylock(&resFood[i])) {
+                // sleep(rand() % 5 + 2);                       // sleep random betweeen 2 and 7
+                printf("id %d get %d food\n", data->id, i);  // print to know what is going on
+                indexFood = i;
+                cond = 0;
+                break;
             }
         }
-    } else {
-        // get resource food
-        while (1 == cond) {
-            for (int i = 0; i < nr; i++) {
-                if (0 == pthread_mutex_trylock(&resFood[i])) {
-                    // sleep(rand() % 5 + 2);                       // sleep random betweeen 2 and 7
-                    printf("id %d get %d food\n", data->id, i);  // print to know what is going on
-                    indexFood = i;
-                    cond = 0;
-                    break;
-                }
-            }
-            if (1 == cond) {
-                printf("id %d enter in queue food\n", data->id);  // print to know what is going on
-                pthread_mutex_lock(&waitQueueFood);
-            }
-        }
-        // get resource space
-        cond = 1;
-        while (1 == cond) {  // while not get space continue trying
-            for (int i = 0; i < nr; i++) {
-                if (0 == pthread_mutex_trylock(&resSpace[i])) {   // try lock into this mutex, if ok then enter the if, if not then continue until check all the mutexes
-                    // sleep(rand() % 5 + 2);                        // sleep random betweeen 2 and 7
-                    printf("id %d get %d space\n", data->id, i);  // print to know what is going on
-                    indexSpace = i;
-                    cond = 0;
-                    break;
-                }
-            }
-            if (1 == cond) {                                       // enter mutex queueSpace
-                printf("id %d enter in queue space\n", data->id);  // print to know what is going on
-                pthread_mutex_lock(&waitQueueSpace);
-            }
+        if (1 == cond) {
+            printf("id %d enter in queue food\n", data->id);  // print to know what is going on
+            pthread_mutex_lock(&waitQueueFood);
         }
     }
 

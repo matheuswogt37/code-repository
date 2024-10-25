@@ -42,25 +42,6 @@ int main() {
         }
     }
 
-    // for (i = 0; i < THREAD_QTD; i++) {
-    //     thrNum[i] = new ThreadData(i);
-
-    //     batch = getBatch(&file);
-    //     if ("" != batch) {
-    //         thrNum[i]->setStr(batch);
-
-    //         result = pthread_create(&threads[i], NULL, foo, thrNum[i]);
-    //         if (0 != result) {
-    //             fprintf(stderr, "Create thread error!\n");
-    //             exit(EXIT_FAILURE);
-    //         }
-    //     } else {
-    //         break;
-    //     }
-    // }
-    // for (i = 0; i < THREAD_QTD; i++) {
-    //     pthread_join(threads[i], NULL);  //* wait final finish
-    // }
     do {
         for (i = 0; i < THREAD_QTD; i++) {
             batch = getBatch(&file);
@@ -80,50 +61,6 @@ int main() {
             pthread_join(threads[j], NULL);  //* wait final finish
         }
     } while (" " != batch);
-
-    // test start
-    // std::ifstream file2("logs/access.log");
-    // do {
-    //     for (i = 0; i < THREAD_QTD; i++) {
-    //         batch = getBatch(&file2);
-    //         if (" " != batch) {
-    //             thrNum[i]->setStr(batch);
-
-    //             result = pthread_create(&threads[i], NULL, foo, thrNum[i]);
-    //             if (0 != result) {
-    //                 fprintf(stderr, "Create thread error!\n");
-    //                 exit(EXIT_FAILURE);
-    //             }
-    //         } else {
-    //             break;
-    //         }
-    //     }
-    //     for (int j = 0; j < i; j++) {
-    //         pthread_join(threads[j], NULL);  //* wait final finish
-    //     }
-    // } while (" " != batch);
-    // std::ifstream file3("logs/access.log");
-    // do {
-    //     for (i = 0; i < THREAD_QTD; i++) {
-    //         batch = getBatch(&file3);
-    //         if (" " != batch) {
-    //             thrNum[i]->setStr(batch);
-
-    //             result = pthread_create(&threads[i], NULL, foo, thrNum[i]);
-    //             if (0 != result) {
-    //                 fprintf(stderr, "Create thread error!\n");
-    //                 exit(EXIT_FAILURE);
-    //             }
-    //         } else {
-    //             break;
-    //         }
-    //     }
-    //     for (int j = 0; j < i; j++) {
-    //         pthread_join(threads[j], NULL);  //* wait final finish
-    //     }
-    // } while (" " != batch);
-
-    // test end
 
     sumStatus200 = 0;
     for (i = 0; i < THREAD_QTD; i++) {

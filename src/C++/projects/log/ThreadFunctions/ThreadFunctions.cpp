@@ -5,7 +5,7 @@ void *foo(void *arg) {
 
     /*
         regex
-        ip -> [0-9]*[.]+[0-9]*[.]+[0-9]*[.]+[0-9]*
+        ip -> [\"]+[ ]+200+[ ]
         hour -> /[0-9]+:[0-2][0-9]
         status -> [\"]+[ ]+2+[0-9]+
 
@@ -14,12 +14,12 @@ void *foo(void *arg) {
 
     std::string str;
 
-    std::regex rStatus("[\"]+[ ]+2+[0-9]+");
+    std::regex rStatus("[\"]+[ ]+200+[ ]");
     std::smatch sm;
 
     str = data->getStr();
     while (std::regex_search(str, sm, rStatus)) {
-        if ("\" 200" == sm.str(0)) {
+        if ("\" 200 " == sm.str(0)) {
             data->addStatus200();
         }
         str = sm.suffix();
@@ -32,7 +32,7 @@ void *foo(void *arg) {
         str = sm.suffix();
     }
     
-    // std::cout << data->getId() << " -> status200 " << data->getStatus200() << " | access -> " << data->getAmountAccess() << "\n";
+    std::cout << data->getId() << " finish!\n";
     pthread_exit(NULL);
 }
 

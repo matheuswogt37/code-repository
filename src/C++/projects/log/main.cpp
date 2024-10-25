@@ -26,7 +26,7 @@ std::string getBatch(std::ifstream *file) {
 
 int main() {
     pthread_t threads[THREAD_QTD];
-    std::ifstream file("logs/access2.log");
+    std::ifstream file("logs/access.log");
     std::string batch;
     int result, sumStatus200, i;
     int sumHour[24] = {0};
@@ -80,6 +80,50 @@ int main() {
             pthread_join(threads[j], NULL);  //* wait final finish
         }
     } while (" " != batch);
+
+    // test start
+    // std::ifstream file2("logs/access.log");
+    // do {
+    //     for (i = 0; i < THREAD_QTD; i++) {
+    //         batch = getBatch(&file2);
+    //         if (" " != batch) {
+    //             thrNum[i]->setStr(batch);
+
+    //             result = pthread_create(&threads[i], NULL, foo, thrNum[i]);
+    //             if (0 != result) {
+    //                 fprintf(stderr, "Create thread error!\n");
+    //                 exit(EXIT_FAILURE);
+    //             }
+    //         } else {
+    //             break;
+    //         }
+    //     }
+    //     for (int j = 0; j < i; j++) {
+    //         pthread_join(threads[j], NULL);  //* wait final finish
+    //     }
+    // } while (" " != batch);
+    // std::ifstream file3("logs/access.log");
+    // do {
+    //     for (i = 0; i < THREAD_QTD; i++) {
+    //         batch = getBatch(&file3);
+    //         if (" " != batch) {
+    //             thrNum[i]->setStr(batch);
+
+    //             result = pthread_create(&threads[i], NULL, foo, thrNum[i]);
+    //             if (0 != result) {
+    //                 fprintf(stderr, "Create thread error!\n");
+    //                 exit(EXIT_FAILURE);
+    //             }
+    //         } else {
+    //             break;
+    //         }
+    //     }
+    //     for (int j = 0; j < i; j++) {
+    //         pthread_join(threads[j], NULL);  //* wait final finish
+    //     }
+    // } while (" " != batch);
+
+    // test end
 
     sumStatus200 = 0;
     for (i = 0; i < THREAD_QTD; i++) {

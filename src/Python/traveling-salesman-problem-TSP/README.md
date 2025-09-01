@@ -25,3 +25,8 @@ Para resolver o problema, será necessário:
  - Implementar a função de cruzamento para gerar novos indivíduos a partir dos pais selecionados. Utilize o operador de cruzamento de ordem ou outro operador de cruzamento adequado.
  - Implementar a função de mutação para alterar aleatoriamente um indivíduo da população. Use um valor de probabilidade de mutação adequado.
  - (opcional) Implementar a função de elitismo para manter os melhores indivíduos da população atual na próxima geração.
+
+ ## Leitura de gráficos
+ As linhas em azul representam uma média do fitness presente em cada geração
+ 
+ As linhas em laranja representam o fitness do melhor indivíduo em cada geração

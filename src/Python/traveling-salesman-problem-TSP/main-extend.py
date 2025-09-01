@@ -5,21 +5,21 @@ import matplotlib.pyplot as plt
 # DATA
 
 # distances between cities
-# A: 0
-# B: 1
-# C: 2
-# D: 3
-# E: 4
-roadmapCords = [0, 1, 2, 3, 4]
+roadmapCords = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 roadmap = [
-    [0, 12, 3, 23, 1],
-    [12, 0, 9, 18, 3],
-    [3, 9, 0, 89, 56],
-    [23, 18, 89, 0, 45],
-    [1, 3, 56, 45, 0]
+    [0, 12, 3, 23, 1, 17, 35, 44, 28, 50],
+    [12, 0, 9, 18, 3, 22, 30, 33, 27, 49],
+    [3, 9, 0, 89, 56, 40, 31, 20, 25, 60],
+    [23, 18, 89, 0, 45, 55, 67, 48, 52, 70],
+    [1, 3, 56, 45, 0, 36, 29, 39, 21, 41],
+    [17, 22, 40, 55, 36, 0, 26, 31, 38, 45],
+    [35, 30, 31, 67, 29, 26, 0, 20, 24, 32],
+    [44, 33, 20, 48, 39, 31, 20, 0, 19, 25],
+    [28, 27, 25, 52, 21, 38, 24, 19, 0, 30],
+    [50, 49, 60, 70, 41, 45, 32, 25, 30, 0]
 ]
 
-manyCities = 5 # how many cities had this problem
+manyCities = 10 # how many cities had this problem
 manyIndividuals = 25 # how many indiviuals in a population
 maxGens = 100 # max number of gens that can run
 tournamentSize = 5 # how many individuals will be in Tournament

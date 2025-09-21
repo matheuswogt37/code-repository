@@ -82,3 +82,29 @@ to algorithms that are required some height on each door will use this table:
 | T      | S      | 3      |
 | T      | U      | 3      |
 | U      | T      | 3      |
+
+to Manhattan heuristic will be used this cords to calculate the distances
+
+| Letra | x  | y  |
+| ----- | -- | -- |
+| A     | 2  | 1  |
+| B     | 1  | 4  |
+| C     | 3  | 4  |
+| D     | 2  | 7  |
+| E     | 2  | 10 |
+| F     | 2  | 13 |
+| G     | 5  | 2  |
+| H     | 6  | 5  |
+| I     | 5  | 8  |
+| J     | 5  | 12 |
+| K     | 7  | 2  |
+| L     | 8  | 8  |
+| M     | 8  | 12 |
+| N     | 10 | 2  |
+| O     | 10 | 5  |
+| P     | 11 | 10 |
+| Q     | 14 | 2  |
+| R     | 14 | 5  |
+| S     | 14 | 7  |
+| T     | 14 | 10 |
+| U     | 14 | 13 |

@@ -296,95 +296,87 @@ std::vector<char> Greedy(std::vector<room>& rooms, char start, char final) {
   return buildPathManhattan(bestPaths, startRoom);
 }
 
-std::map<room*, std::pair<room*,int>> AStarRealDistance(std::vector<room>& rooms, room* finalRoom) {
-  std::map<room*, std::pair<room*,int>> heuristic;
+std::map<room*, int> AStarRealDistance(std::vector<room>& rooms, room* finalRoom) {
+  std::map<room*, int> distance;
   std::queue<room*> queue;
   room* current;
   int actWeight;
 
-  heuristic[finalRoom] = std::make_pair(nullptr, 0);
-
+  distance[finalRoom] = 0;
   queue.push(finalRoom);
   while(!queue.empty()) {
     current = queue.front();
     current->visited = true;
-
-    for (auto& [neighbor, weight] : current->neighborns) {
-      actWeight = weight + heuristic[current].second;
-      auto it = heuristic.find(neighbor);
-      if (it != heuristic.end()) { // ja existe na heuristica
-        if (actWeight < (heuristic[current].second + weight)) {
-          heuristic[neighbor] = std::make_pair(current, heuristic[current].second + weight);
+    
+    for(auto& [neighbor, weight] : current->neighborns) {
+      actWeight = weight + distance[current];
+      auto it = distance.find(neighbor);
+      if (it != distance.end()) { // alredy exist
+        if (actWeight < distance[current]) {
+          distance[neighbor] = distance[current] + weight;
           queue.push(neighbor);
         }
-      } else { // eh novo na heuristica 
-        heuristic[neighbor] = std::make_pair(current, actWeight);
+      } else { // it's new
+        distance[neighbor] = actWeight;
       }
       if (false == neighbor->visited) {
         queue.push(neighbor);
       }
     }
-    
+
     queue.pop();
   }
 
-  return heuristic;
-}
-
-std::vector<char> AStar(std::vector<room>& rooms, char start, char final) {
-  room* finalRoom = findRoomByName(rooms, final);
-  std::map<room*, std::pair<room*, int>> realDistance = AStarRealDistance(rooms, finalRoom);
-
-  return std::vector<char> ();
+  return distance;
 }
 
 // A* -> retorna caminho
-// std::vector<char> AStar(std::vector<room>& rooms, char start, char goal) {
-//   resetVisited(rooms);
-//   room* s = findRoomByName(rooms, start);
-//   room* g = findRoomByName(rooms, goal);
-//   if (s == NULL || g == NULL) return std::vector<char>();
+std::vector<char> AStar(std::vector<room>& rooms, char start, char final) {
+  resetVisited(rooms);
+  room* finalRoom = findRoomByName(rooms, final);
+  room* startRoom = findRoomByName(rooms, start);
+  std::map<room*, int> realDistance = AStarRealDistance(rooms, finalRoom);
+  resetVisited(rooms);
+  std::queue<room*> queue;
+  room* current;
+  std::vector<char> path;
+  int actWeight = 0;
+  int tempWeight;
+  std::pair<room*, int> actBestWay;
+  bool hasActBestWay;
 
-//   std::map<room*, int> gScore;
-//   for (std::size_t i = 0; i < rooms.size(); i++) {
-//     gScore[&rooms[i]] = INT_MAX;
-//   }
-//   gScore[s] = 0;
+  queue.push(startRoom);
 
-//   struct CompareAStar {
-//     std::map<room*, int>& gScore;
-//     room* g;
-//     std::vector<room>& rooms;
-//     CompareAStar(std::map<room*, int>& gs, std::vector<room>& r, room* goalPtr) : gScore(gs), g(goalPtr), rooms(r) {}
-//     bool operator()(room* a, room* b) {
-//       int fa = gScore[a] + heuristic(rooms, a, g);
-//       int fb = gScore[b] + heuristic(rooms, b, g);
-//       return fa > fb;
-//     }
-//   };
+  while(!queue.empty()) {
+    current = queue.front();
+    if (current == finalRoom) { // it's the final room
+      break;
+    }
 
-//   std::priority_queue<room*, std::vector<room*>, CompareAStar> openSet(CompareAStar(gScore, rooms, g));
-//   std::map<room*, room*> parent;
-//   parent[s] = NULL;
-//   openSet.push(s);
+    current->visited = true;
+    path.push_back(current->name);
+    hasActBestWay = false;
+    for (auto& [neighbor, weight] : current->neighborns) {
+      if (!neighbor->visited) { // if not visited alredy
+        tempWeight = manhattanHeuristic(neighbor->name, final) + realDistance[neighbor];
+        if (hasActBestWay) {
+          if (tempWeight < actBestWay.second) {
+            actBestWay = std::make_pair(neighbor, tempWeight);
+          }
+        } else {
+          actBestWay = std::make_pair(neighbor, tempWeight);
+          hasActBestWay = true;
+        }
+      }
+    }
+    actWeight += actBestWay.second;
+    queue.push(actBestWay.first);
 
-//   while (!openSet.empty()) {
-//     room* current = openSet.top(); openSet.pop();
-//     if (current == g) {
-//       return buildPath(parent, g);
-//     }
-//     for (auto& [neighbor, weight] : current->neighborns) {
-//       if (gScore[current] == INT_MAX) continue; // protecao
-//       int tentative = gScore[current] + weight;
-//       if (tentative < gScore[neighbor]) {
-//         gScore[neighbor] = tentative;
-//         parent[neighbor] = current;
-//         openSet.push(neighbor);
-//       }
-//     }
-//   }
-//   return std::vector<char>();
-// }
+    queue.pop();
+  }
+
+  return path;
+} 
 
 int main()
 {
@@ -400,7 +392,7 @@ int main()
   std::vector<char> pathBFS   = BFS(allRooms, init, final);
   std::vector<char> pathDFS   = DFS(allRooms, init, final);
   std::vector<char> pathGreed = Greedy(allRooms, init, final);
-  // std::vector<char> pathAstar = AStar(allRooms, init, final);
+  std::vector<char> pathAstar = AStar(allRooms, init, final);
 
   // impressao opcional (fora das funcoes de busca)
   std::cout << "\n--- Resultados ---\n";
@@ -419,10 +411,10 @@ int main()
   else { for (std::size_t i = 0; i < pathGreed.size(); i++) std::cout << pathGreed[i] << " "; }
   std::cout << "\n";
 
-  // std::cout << "A*: ";
-  // if (pathAstar.empty()) std::cout << "Nenhum caminho";
-  // else { for (std::size_t i = 0; i < pathAstar.size(); i++) std::cout << pathAstar[i] << " "; }
-  // std::cout << "\n";
+  std::cout << "A*: ";
+  if (pathAstar.empty()) std::cout << "Nenhum caminho";
+  else { for (std::size_t i = 0; i < pathAstar.size(); i++) std::cout << pathAstar[i] << " "; }
+  std::cout << "\n";
 
   return 0;
 }

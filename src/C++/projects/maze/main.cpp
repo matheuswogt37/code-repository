@@ -349,12 +349,12 @@ std::vector<char> AStar(std::vector<room>& rooms, char start, char final) {
 
   while(!queue.empty()) {
     current = queue.front();
+    path.push_back(current->name);
     if (current == finalRoom) { // it's the final room
       break;
     }
 
     current->visited = true;
-    path.push_back(current->name);
     hasActBestWay = false;
     for (auto& [neighbor, weight] : current->neighborns) {
       if (!neighbor->visited) { // if not visited alredy
@@ -378,6 +378,33 @@ std::vector<char> AStar(std::vector<room>& rooms, char start, char final) {
   return path;
 } 
 
+int measureCost(std::vector<room>& rooms, std::vector<char> path) {
+  int cost = 0;
+  room* current = findRoomByName(rooms, path.front());
+  room* next;
+
+  for (int i = 1; i < path.size(); i++) {
+    next = findRoomByName(rooms, path[i]);
+    cost += current->neighborns[next];
+    current = next;
+  }
+
+  return cost;
+}
+
+// measure time to each algorytm
+template <typename Func>
+std::vector<char> measureTime(const std::string& name, Func f) {
+    auto start = std::chrono::high_resolution_clock::now();
+    std::vector<char> result = f();
+    auto end = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double, std::milli> duration = end - start;
+    std::cout << name << " levou " << duration.count() << " ms\n";
+
+    return result;
+}
+
 int main()
 {
   char init;
@@ -385,36 +412,44 @@ int main()
   std::vector<room> allRooms; 
   allRooms = createAllRooms("ABCDEFGHIJKLMNOPQRSTU", 22);
 
-  // askAttributes(&init, &final); //DEV ONLY: AFTER DISCOMMENT   (preservado)
-  askAttributes(&init, &final);     // usando a entrada do usuario
-
-  // exemplo de uso: cada funcao retorna um vetor de chars com o caminho
-  std::vector<char> pathBFS   = BFS(allRooms, init, final);
-  std::vector<char> pathDFS   = DFS(allRooms, init, final);
-  std::vector<char> pathGreed = Greedy(allRooms, init, final);
-  std::vector<char> pathAstar = AStar(allRooms, init, final);
-
-  // impressao opcional (fora das funcoes de busca)
-  std::cout << "\n--- Resultados ---\n";
-  std::cout << "BFS: ";
-  if (pathBFS.empty()) std::cout << "Nenhum caminho";
-  else { for (std::size_t i = 0; i < pathBFS.size(); i++) std::cout << pathBFS[i] << " "; }
+  askAttributes(&init, &final);
+  
   std::cout << "\n";
+  // BFS
+  std::vector<char> pathBFS = measureTime("BFS", [&]() {
+      return BFS(allRooms, init, final);
+  });
+  std::cout << "Caminho BFS: \t\t";
+  for (char c : pathBFS) std::cout << c << " ";
+  std::cout << "(" << measureCost(allRooms, pathBFS) << ")";
+  std::cout << "\n\n";
 
-  std::cout << "DFS: ";
-  if (pathDFS.empty()) std::cout << "Nenhum caminho";
-  else { for (std::size_t i = 0; i < pathDFS.size(); i++) std::cout << pathDFS[i] << " "; }
-  std::cout << "\n";
+  // DFS
+  std::vector<char> pathDFS = measureTime("DFS", [&]() {
+      return DFS(allRooms, init, final);
+  });
+  std::cout << "Caminho DFS: \t\t";
+  for (char c : pathDFS) std::cout << c << " ";
+  std::cout << "(" << measureCost(allRooms, pathDFS) << ")";
+  std::cout << "\n\n";
 
-  std::cout << "Greedy: ";
-  if (pathGreed.empty()) std::cout << "Nenhum caminho";
-  else { for (std::size_t i = 0; i < pathGreed.size(); i++) std::cout << pathGreed[i] << " "; }
-  std::cout << "\n";
+  // Greedy
+  std::vector<char> pathGreedy = measureTime("Greedy", [&]() {
+      return Greedy(allRooms, init, final);
+  });
+  std::cout << "Caminho Greedy: \t";
+  for (char c : pathGreedy) std::cout << c << " ";
+  std::cout << "(" << measureCost(allRooms, pathGreedy) << ")";
+  std::cout << "\n\n";
 
-  std::cout << "A*: ";
-  if (pathAstar.empty()) std::cout << "Nenhum caminho";
-  else { for (std::size_t i = 0; i < pathAstar.size(); i++) std::cout << pathAstar[i] << " "; }
-  std::cout << "\n";
+  // A*
+  std::vector<char> pathAstar = measureTime("A*", [&]() {
+      return AStar(allRooms, init, final);
+  });
+  std::cout << "Caminho A*: \t\t";
+  for (char c : pathAstar) std::cout << c << " ";
+  std::cout << "(" << measureCost(allRooms, pathAstar) << ")";
+  std::cout << "\n\n";
 
   return 0;
 }

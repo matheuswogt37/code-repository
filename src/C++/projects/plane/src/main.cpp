@@ -10,12 +10,15 @@
 //! parameters 
 const int QTD_INDIVIDUALS = 500;
 const int QTD_GENERATIONS = 5000;
-const int QTD_ELITISM = 1;
-const int QTD_CROSSOVER = 40;
-const int QTD_TOURNMENT = 10;
-const double MUTATION_RATE = 0.1;
-const double PENALTY_WEIGHT_PROFIT = 5000.0;
-const double PENALTY_VOL_PROFIT = 5000.0;
+const int QTD_ELITISM = 10;
+const int QTD_CROSSOVER = 390;
+const int QTD_TOURNMENT = 200;
+const double MUTATION_RATE = 0.8;
+const double MUTATION_STR = 0.01;
+const double MUTATION_STR_MIN = 0.01;
+const double MUTATION_STR_MAX = 1.0;
+const double PENALTY_WEIGHT_PROFIT = 10000.0;
+const double PENALTY_VOL_PROFIT = 10000.0;
 
 //! cargo informations
 const double CARGO_PROFIT[] = {310.0, 380.0, 350.0, 285.0};
@@ -161,6 +164,11 @@ std::vector<double> tournment(const std::vector<std::pair<std::vector<double>, d
 
 // crossover 1-point + mutação discreta (±1 ton por gene), repara no final
 std::pair<std::vector<double>, double> crossover(const std::vector<double> &ch1, const std::vector<double> &ch2) {
+    //! for random mutation str
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dist(MUTATION_STR_MIN, MUTATION_STR_MAX);
+
     std::vector<double> child;
     const std::vector<double> *father = &ch1;
     const std::vector<double> *mother = &ch2;
@@ -174,11 +182,18 @@ std::pair<std::vector<double>, double> crossover(const std::vector<double> &ch1,
     std::uniform_real_distribution<double> u01(0.0,1.0);
     std::uniform_int_distribution<int> coin(0,1);
     for (int i=0;i<12;i++) {
+
+
         if (u01(rng) < MUTATION_RATE) {
-            int s = (coin(rng) == 0) ? -1 : 1;
+            double s = (coin(rng) == 0) ? -dist(gen) : dist(gen);
             child[i] += double(s) * 1.0;
             if (child[i] < 0.0) child[i] = 0.0;
         }
+        // if (u01(rng) < MUTATION_RATE) {
+        //     double s = (coin(rng) == 0) ? -MUTATION_STR : MUTATION_STR;
+        //     child[i] += double(s) * 1.0;
+        //     if (child[i] < 0.0) child[i] = 0.0;
+        // }
     }
 
     repairIndividual(child);

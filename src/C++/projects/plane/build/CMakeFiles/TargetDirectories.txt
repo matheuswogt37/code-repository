@@ -1,0 +1,3 @@
+/mnt/Data/Desenvolvimento/code-repository/src/C++/projects/plane/build/CMakeFiles/plane.dir
+/mnt/Data/Desenvolvimento/code-repository/src/C++/projects/plane/build/CMakeFiles/edit_cache.dir
+/mnt/Data/Desenvolvimento/code-repository/src/C++/projects/plane/build/CMakeFiles/rebuild_cache.dir

@@ -4,6 +4,8 @@
 #include <cmath>   // For std::rand, std::srand
 
 int EPOCHS = 10;
+double MIN_DIFF_STOP = 0.01;
+
 
 class Adaline {
 public:
@@ -25,7 +27,10 @@ public:
     }
 
     void train(const std::vector<std::vector<double>>& inputs, const std::vector<double>& targets, int epochs) {
-        for (int epoch = 0; epoch < epochs; ++epoch) {
+        int epoch = 0;
+        int diff_epoch = 0;
+
+        while (epoch < EPOCHS) {
             double totalError = 0.0;
             for (size_t i = 0; i < inputs.size(); i++) {
                 double netInput = calculateNetInput(inputs[i]);
@@ -36,7 +41,34 @@ public:
                 }
                 bias += learningRate * error;
             }
+            std::cout << "Epoch " << epoch + 1 << ", Total Squared Error: " << totalError << std::endl;
+            
+            
+            if (diff_epoch < (totalError + MIN_DIFF_STOP) && diff_epoch > (totalError - MIN_DIFF_STOP)) {
+                epoch++;
+            } else {
+                epoch = 0;
+                diff_epoch = totalError;
+            }
+            // if (diff_epoch = 0) { //* first iteration
+            //     diff_epoch = totalError;
+            // } else {
+            // }
         }
+        
+        // for (int epoch = 0; epoch < epochs; epoch++) {
+        //     double totalError = 0.0;
+        //     for (size_t i = 0; i < inputs.size(); i++) {
+        //         double netInput = calculateNetInput(inputs[i]);
+        //         double error = targets[i] - netInput;
+        //         totalError += error;
+        //         for (size_t j = 0; j < weights.size(); j++) {
+        //             weights[j] += learningRate * error * inputs[i][j];
+        //         }
+        //         bias += learningRate * error;
+        //     }
+        //     std::cout << "Epoch " << epoch + 1 << ", Total Squared Error: " << totalError << std::endl;
+        // }
     }
 
     int predict(const std::vector<double>& input) const {

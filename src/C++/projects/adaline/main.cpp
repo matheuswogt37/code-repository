@@ -3,8 +3,7 @@
 #include <numeric> // For std::inner_product
 #include <cmath>   // For std::rand, std::srand
 
-int EPOCHS = 10;
-double MIN_DIFF_STOP = 0.01;
+double MAX_ERROR_RATE = 0.01;
 
 
 class Adaline {
@@ -26,29 +25,25 @@ public:
         setWeights(this->weights.size());
     }
 
-    void train(const std::vector<std::vector<double>>& inputs, const std::vector<double>& targets, int epochs) {
-        int epoch = 0;
-
-        while (epoch < EPOCHS) {
-            double totalError = 0.0;
+    void train(const std::vector<std::vector<double>>& inputs, const std::vector<double>& targets) {
+        double epoch = 1;
+        double totalError;
+        do
+        {
+            totalError = 0.0;
             for (size_t i = 0; i < inputs.size(); i++) {
                 double netInput = calculateNetInput(inputs[i]);
                 double error = targets[i] - netInput;
-                totalError += error * error;
+                totalError += error;
                 for (size_t j = 0; j < weights.size(); j++) {
                     weights[j] += learningRate * error * inputs[i][j];
                 }
                 bias += learningRate * error;
             }
             totalError *= 0.5;
-            std::cout << "Epoch " << epoch + 1 << ", Total Squared Error: " << totalError << std::endl;
-            
-            
-            if (totalError < MIN_DIFF_STOP) {
-                return;
-            }
+            std::cout << "Epoch " << epoch << ", Total Squared Error: " << totalError << std::endl;
             epoch++;
-        }
+        } while (totalError > MAX_ERROR_RATE || epoch <= 10);
     }
 
     int predict(const std::vector<double>& input) const {
@@ -93,21 +88,21 @@ int main() {
     //! OR
     std::cout << "\nOR training!\n";
     std::vector<double> result_train_OR = {0, 1, 1, 1};
-    ada.train(inputs, result_train_OR, EPOCHS);
+    ada.train(inputs, result_train_OR);
     ada.runBatch(inputs); //* run using the train inputs but this is only for test all occurrences
 
     //! AND
     ada.resetWeight();
     std::cout << "\nAND training!\n";
     std::vector<double> result_train_AND = {0, 0, 0, 1};
-    ada.train(inputs, result_train_AND, EPOCHS);
+    ada.train(inputs, result_train_AND);
     ada.runBatch(inputs); //* run using the train inputs but this is only for test all occurrences
     
     //! XOR
     ada.resetWeight();
     std::cout << "\nXOR training!\n";
     std::vector<double> result_train_XOR = {0, 1, 1, 0};
-    ada.train(inputs, result_train_XOR, EPOCHS);
+    ada.train(inputs, result_train_XOR);
     ada.runBatch(inputs); //* run using the train inputs but this is only for test all occurrences
 
     return 0;

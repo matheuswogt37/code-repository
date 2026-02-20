@@ -11,15 +11,15 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     } else if (key == GLFW_KEY_A) {
         if (action == GLFW_PRESS) {
-            rotation += 50.0f;
+            rotation += 100.0f;
         } else if (action == GLFW_RELEASE) {
-            rotation -= 50.0f;
+            rotation -= 100.0f;
         }
     } else if (key == GLFW_KEY_D) {
         if (action == GLFW_PRESS) {
-            rotation -= 50.0f;
+            rotation -= 100.0f;
         } else if (action == GLFW_RELEASE) {
-            rotation += 50.0f;
+            rotation += 100.0f;
         }
     }
 }
@@ -57,7 +57,14 @@ int main() {
         glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        glRotatef((float) glfwGetTime() * rotation, 0.f, 0.f, 1.f);
+
+        float lastTime = 0.0f;
+        float currentTime = glfwGetTime();
+        float deltaTime = currentTime - lastTime;
+        lastTime = currentTime;
+
+
+        glRotatef(rotation * deltaTime, 0.f, 0.f, 1.f);
         glBegin(GL_TRIANGLES);
         glColor3f(0.f, 0.f, 0.f);
         glVertex3f(-0.6f, -0.4f, 0.f);

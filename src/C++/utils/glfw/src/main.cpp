@@ -8,6 +8,10 @@
 
 bool rotateLeft = false;
 bool rotateRight = false;
+bool moveLeft = false;
+bool moveRight = false;
+bool moveUp = false;
+bool moveDown = false;
 
 // ============================
 // Triangle Object
@@ -15,11 +19,33 @@ bool rotateRight = false;
 
 class Triangle {
     private:
+        //* movement
+        float posX, posY;
+        float moveSpeed;
+
+        //* rotation
         float rotation;
+        float rotateSpeed;
     public:
-        Triangle() : rotation(0.f) {}
+        Triangle() : posX(0.f), posY(0.f), moveSpeed(2.5f), 
+        rotation(0.f), rotateSpeed(100.f) {}
         ~Triangle() {}
         void update(float deltaTime) {
+            //* movement
+            if (moveLeft) {
+                posX -= moveSpeed * deltaTime;
+            }
+            if (moveRight) {
+                posX += moveSpeed * deltaTime;
+            }
+            if (moveUp) {
+                posY += moveSpeed * deltaTime;
+            }
+            if (moveDown) {
+                posY -= moveSpeed * deltaTime;
+            }
+
+            //* rotation
             if (rotateLeft) {
                 rotation += 100.0f * deltaTime;
             }
@@ -29,6 +55,8 @@ class Triangle {
         }
         void draw() {
             glPushMatrix();
+
+            glTranslatef(posX, posY, 0.f);
             glRotatef(rotation, 0.f, 0.f, 1.f);
 
             glBegin(GL_TRIANGLES);
@@ -55,17 +83,41 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
     
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
-    } else if (key == GLFW_KEY_A) {
+    } else if (key == GLFW_KEY_LEFT) {
         if (action == GLFW_PRESS) {
             rotateLeft = true;
         } else if (action == GLFW_RELEASE) {
             rotateLeft = false;
         }
-    } else if (key == GLFW_KEY_D) {
+    } else if (key == GLFW_KEY_RIGHT) {
         if (action == GLFW_PRESS) {
             rotateRight = true;
         } else if (action == GLFW_RELEASE) {
             rotateRight = false;
+        }
+    } else if (key == GLFW_KEY_A) {
+        if (action == GLFW_PRESS) {
+            moveLeft = true;
+        } else if (action == GLFW_RELEASE) {
+            moveLeft = false;
+        }
+    } else if (key == GLFW_KEY_D) {
+        if (action == GLFW_PRESS) {
+            moveRight = true;
+        } else if (action == GLFW_RELEASE) {
+            moveRight = false;
+        }
+    } else if (key == GLFW_KEY_W) {
+        if (action == GLFW_PRESS) {
+            moveUp = true;
+        } else if (action == GLFW_RELEASE) {
+            moveUp = false;
+        }
+    } else if (key == GLFW_KEY_S) {
+        if (action == GLFW_PRESS) {
+            moveDown = true;
+        } else if (action == GLFW_RELEASE) {
+            moveDown = false;
         }
     }
 }

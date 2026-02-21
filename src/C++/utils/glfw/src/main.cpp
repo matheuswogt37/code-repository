@@ -2,9 +2,54 @@
 #include "linmath.h"
 #include <iostream>
 
-//* global vars
+// ============================
+// Global Variables
+// ============================
+
 bool rotateLeft = false;
 bool rotateRight = false;
+
+// ============================
+// Triangle Object
+// ============================
+
+class Triangle {
+    private:
+        float rotation;
+    public:
+        Triangle() : rotation(0.f) {}
+        ~Triangle() {}
+        void update(float deltaTime) {
+            if (rotateLeft) {
+                rotation += 100.0f * deltaTime;
+            }
+            if (rotateRight) {
+                rotation -= 100.0f * deltaTime;
+            }
+        }
+        void draw() {
+            glPushMatrix();
+            glRotatef(rotation, 0.f, 0.f, 1.f);
+
+            glBegin(GL_TRIANGLES);
+                glColor3f(1.f, 0.f, 0.f);
+                glVertex3f(-0.6f, -0.4f, 0.f);
+
+                glColor3f(0.f, 1.f, 0.f);
+                glVertex3f(0.6f, -0.4f, 0.f);
+                
+                glColor3f(0.f, 0.f, 1.f);
+                glVertex3f(0.f, 0.6f, 0.f);
+            glEnd();
+
+            glPopMatrix();
+        }
+};
+
+
+// ============================
+// Global Input State
+// ============================
 
 static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     
@@ -25,6 +70,10 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
     }
 }
 
+// ============================
+// Main
+// ============================
+
 int main() {
     
     if(!glfwInit()) {
@@ -43,8 +92,9 @@ int main() {
 
     glfwSetKeyCallback(window, key_callback);
 
+    Triangle triangle;
+
     float lastTime = 0.0f;
-    float rotation = 0.0f;
     while(!glfwWindowShouldClose(window)) {
         float ratio;
         int width, height;
@@ -65,23 +115,13 @@ int main() {
         float deltaTime = currentTime - lastTime;
         lastTime = currentTime;
 
-        if (rotateLeft) {
-            rotation += 100.0f * deltaTime;
-        }
-        if (rotateRight) {
-            rotation -= 100.0f * deltaTime;
-        }
+        //* update objects
+        
+        triangle.update(deltaTime);
+        
+        //* draw objects
 
-        glRotatef(rotation, 0.f, 0.f, 1.f);
-        glBegin(GL_TRIANGLES);
-        glColor3f(1.f, 0.f, 0.f);
-        glVertex3f(-0.6f, -0.4f, 0.f);
-        glColor3f(0.f, 1.f, 0.f);
-        glVertex3f(0.6f, -0.4f, 0.f);
-        glColor3f(0.f, 0.f, 1.f);
-        glVertex3f(0.f, 0.6f, 0.f);
-        glEnd();
-
+        triangle.draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

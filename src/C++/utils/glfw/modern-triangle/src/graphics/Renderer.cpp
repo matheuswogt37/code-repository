@@ -18,9 +18,12 @@ const char* vertexShaderSrc = R"(
 const char* fragmentShaderSrc = R"(
     #version 330 core
     out vec4 FragColor;
+
+    uniform vec4 uColor;
+
     void main()
     {
-        FragColor = vec4(0.2, 0.7, 1.0, 1.0);
+        FragColor = uColor;
     }
 )";
 
@@ -51,6 +54,14 @@ Renderer::~Renderer() {
 
 void Renderer::draw(const Triangle &triangle) {
     this->shader.use();
+
+    shader.setVec4(
+        "uColor",
+        triangle.r,
+        triangle.g,
+        triangle.b,
+        triangle.a
+    );
 
     glm::mat4 transform = glm::mat4(1.0f);
     transform = glm::translate(transform, glm::vec3(triangle.transform.x, triangle.transform.y, 0.0f));

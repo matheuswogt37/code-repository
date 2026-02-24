@@ -29,3 +29,10 @@ void Shader::use() const {
 void Shader::setMat4(const std::string &name, const float *matrix) const {
     glUniformMatrix4fv(glGetUniformLocation(this->id, name.c_str()), 1, GL_FALSE, matrix);
 }
+
+void Shader::setVec4(const std::string& name, float x, float y, float z, float w) const {
+    glUniform4f(
+        glGetUniformLocation(this->id, name.c_str()),
+        x, y, z, w
+    );
+}

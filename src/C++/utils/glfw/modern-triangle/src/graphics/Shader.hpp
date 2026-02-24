@@ -9,4 +9,5 @@ class Shader {
         ~Shader();
         void use() const;
         void setMat4(const std::string &name, const float *matrix) const;
+        void setVec4(const std::string& name, float x, float y, float z, float w) const;
 };

@@ -35,18 +35,18 @@ Luke/
 │   ├── VertexArray.hpp
 │   ├── VertexBuffer.hpp
 │   ├── IndexBuffer.hpp
+│   └── pipeline/
+│        ├── RenderPass.hpp
+│        ├── ForwardPass.hpp
+│        ├── ShadowPass.hpp
+│        └── WaterPass.hpp
 │
-├── rendering/pipeline/
-│   ├── RenderPass.hpp
-│   ├── ForwardPass.hpp
-│   ├── ShadowPass.hpp
-│   ├── WaterPass.hpp
 │
 ├── scene/
 │   ├── Scene.hpp
 │   └── SceneManager.hpp
 │
 ├── resources/
-│   ├── ResourceManager.hpp
+│   └── ResourceManager.hpp
 │
 └── main.cpp

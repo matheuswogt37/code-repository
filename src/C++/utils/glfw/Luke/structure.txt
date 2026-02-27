@@ -1,0 +1,52 @@
+Luke/
+│
+├── core/
+│   ├── Application.hpp
+│   ├── Window.hpp
+│   ├── Time.hpp
+│   ├── Input.hpp
+│
+├── ecs/
+│   ├── Entity.hpp
+│   ├── Component.hpp
+│   ├── Registry.hpp
+│   ├── components/
+│   │    ├── Transform.hpp
+│   │    ├── MeshRenderer.hpp
+│   │    ├── CameraComponent.hpp
+│   │    ├── LightComponent.hpp
+│   └── systems/
+│        ├── MovementSystem.hpp
+│        ├── RenderSystem.hpp
+│        ├── InputSystem.hpp
+│        └── PhysicsSystem.hpp
+│
+├── rendering/
+│   ├── Renderer.hpp
+│   ├── RenderCommand.hpp
+│   ├── RenderQueue.hpp
+│   ├── Framebuffer.hpp
+│   ├── Skybox.hpp
+│   ├── Material.hpp
+│   ├── Shader.hpp
+│   ├── Texture.hpp
+│   ├── Mesh.hpp
+│   ├── MeshFactory.hpp
+│   ├── VertexArray.hpp
+│   ├── VertexBuffer.hpp
+│   ├── IndexBuffer.hpp
+│
+├── rendering/pipeline/
+│   ├── RenderPass.hpp
+│   ├── ForwardPass.hpp
+│   ├── ShadowPass.hpp
+│   ├── WaterPass.hpp
+│
+├── scene/
+│   ├── Scene.hpp
+│   └── SceneManager.hpp
+│
+├── resources/
+│   ├── ResourceManager.hpp
+│
+└── main.cpp

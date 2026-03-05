@@ -9,12 +9,16 @@ class Registry {
         Entity nextEntity = 1;
 
         std::vector<Entity> entities;
-        std::unordered_map<std::type_index, std::unordered_map<Entity, void*>> componentPools;
+        std::unordered_map<std::type_index, std::unordered_map<Entity, std::unique_ptr<void>>> componentPools;
 
     public:
         Entity createEntity();
+        //* new
+        template<typename T, typename... Args>
+        T& addComponent(Entity entity, Args&&... args);
+        //* old
         template<typename T>
-        void addComponent (Entity entity, T component);
+        void addComponent (Entity entity, const T &component);
 
         template<typename T>
         T &getComponent(Entity entity);
@@ -25,3 +29,29 @@ class Registry {
 
         const std::vector<Entity> &getEntities() const;
 };
+
+//* new
+template<typename T, typename... Args>
+T& Registry::addComponent(Entity entity, Args&&... args) {
+    auto component = std::make_unique<T>(std::foward<Args>(args)...);
+    T& ref = *component;
+    this->componentPools[typeid(T)][entity] = std::move(component);
+    return ref;
+}
+
+//* old
+template<typename T>
+void Registry::addComponent(Entity entity, const T &component) {
+    this->componentPools[typeid(T)][entity] = std::make_unique<T>(component);
+}
+
+template<typename T>
+T &Registry::getComponent(Entity entity) {
+    return *static_cast<T*>(this->componentPools[typeid(T)][entity].get());
+}
+
+template<typename T>
+bool Registry::hasComponent(Entity entity) {
+    auto &pool = this->componentPools[typeid(T)];
+    return pool.find(entity) != pool.end();
+}

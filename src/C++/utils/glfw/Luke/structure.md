@@ -9,9 +9,9 @@
 - [x] Transform
 - [x] ECS mínimo
 - [x] RenderSystem
-- [ ] Camera
-- [ ] Scene
-- [ ] ResourceManager
+- [x] Camera
+- [x] Scene
+- [x] ResourceManager
 
 ## Estrutura
 
@@ -83,3 +83,7 @@ for (Entity e : registry.view<Transform, MeshRenderer>())
 ```
 
 Isso deixa o ECS 10x mais eficiente
+
+----------------------------------------
+
+Implementar `unload()` na Scene para fazer essa implementação no SceneManager também

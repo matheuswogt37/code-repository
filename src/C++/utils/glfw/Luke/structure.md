@@ -8,7 +8,7 @@
 - [x] Mesh
 - [x] Transform
 - [x] ECS mínimo
-- [ ] RenderSystem
+- [x] RenderSystem
 - [ ] Camera
 - [ ] Scene
 - [ ] ResourceManager

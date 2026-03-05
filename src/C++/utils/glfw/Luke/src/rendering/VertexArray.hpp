@@ -3,7 +3,7 @@
 /// @brief vao
 class VertexArray {
     private:
-        unsigned int vaoID;
+        unsigned int id;
     public:
         VertexArray();
         ~VertexArray();

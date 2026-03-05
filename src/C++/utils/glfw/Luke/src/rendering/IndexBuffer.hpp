@@ -4,8 +4,8 @@
 /// @brief ebo
 class IndexBuffer {
     private:
-        unsigned int eboID;
-        unsigned int eboCount;
+        unsigned int id;
+        unsigned int count;
     public:
         IndexBuffer(const unsigned int* data, unsigned int count);
         ~IndexBuffer();

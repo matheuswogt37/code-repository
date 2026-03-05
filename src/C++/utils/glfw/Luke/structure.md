@@ -3,7 +3,7 @@
 - [x] Window + GLAD
 - [x] Shader
 - [x] Buffers (VAO/VBO/EBO)
-- [ ] Mesh
+- [x] Mesh
 - [ ] Transform
 - [ ] ECS mínimo
 - [ ] RenderSystem

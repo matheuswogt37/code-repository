@@ -4,7 +4,7 @@
 /// @brief VBO
 class VertexBuffer {
     private:
-        unsigned int vboID;
+        unsigned int id;
     public:
         VertexBuffer(const void* data, unsigned int size);
         ~VertexBuffer();

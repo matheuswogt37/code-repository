@@ -1,15 +1,15 @@
 #include "VertexArray.hpp"
 
 VertexArray::VertexArray() {
-    glGenVertexArrays(1, &this->vaoID);
+    glGenVertexArrays(1, &this->id);
 }
 
 VertexArray::~VertexArray() {
-    glDeleteVertexArrays(1, &this->vaoID);
+    glDeleteVertexArrays(1, &this->id);
 }
 
 void VertexArray::bind() const {
-    glBindVertexArray(this->vaoID);
+    glBindVertexArray(this->id);
 }
 
 void VertexArray::unbind() const {

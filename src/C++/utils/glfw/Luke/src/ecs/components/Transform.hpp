@@ -1,25 +1,44 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/quaternion.hpp>
-
-/// @brief Representa onde, orientacao e escala da entidade
-struct Transform
-{
-    /// @brief posicao no espaco de mundo
+#include <glm/gtc/matrix_transform.hpp>
+struct Transform {
     glm::vec3 position {0.f};
-    /// @brief Quaternion representa rotacao como eixo + angulo de forma continua e estavel
     glm::quat rotation {1.f, 0.f, 0.f, 0.f};
-    /// @brief escala 3D da entidade
     glm::vec3 scale {1.f};
 
-    /// @brief matriz que transforma do espaco local para o espaco de mundo
-    glm::mat4 modelMatrix {1.f};
-    /// @brief indica se o modelMatrix precisa ser recalculado
-    bool dirty = true;
+    private:
+        glm::mat4 modelMatrix {1.f};
+        bool dirty = true;
+        void updateMatrix() {
+            glm::mat4 translation = glm::translate(glm::mat4(1.f), position);
+            glm::mat4 rotationMat = glm::mat4_cast(rotation);
+            glm::mat4 scaleMat = glm::scale(glm::mat4(1.f), scale);
 
-    void updateMatrix() {
-        modelMatrix = glm::translate(glm::mat4(1.f), position) * glm::toMat4(rotation) * glm::scale(glm::mat4(1.f), scale);
-        dirty = false;
-    }
+            modelMatrix = translation * rotationMat * scaleMat;
+
+            dirty = false;
+        }
+    public:
+        const glm::mat4 getModelMatrix() {
+            if (dirty) {
+                updateMatrix();
+            }
+            return modelMatrix;
+        }
+
+        void setPosition(const glm::vec3 &pos) {
+            position = pos;
+            dirty = true;
+        }
+
+        void setRotation(const glm::quat &rot) {
+            rotation = rot;
+            dirty = true;
+        }
+
+        void setScale(const glm::vec3 &s) {
+            scale = s;
+            dirty = true;
+        }
 };

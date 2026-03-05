@@ -1,4 +1,6 @@
-# Ordem a fazer:
+# Luke structure
+
+## Ordem a fazer
 
 - [x] Window + GLAD
 - [x] Shader
@@ -11,7 +13,7 @@
 - [ ] Scene
 - [ ] ResourceManager
 
-# Estrutura
+## Estrutura
 
 ``` bash
 Luke/

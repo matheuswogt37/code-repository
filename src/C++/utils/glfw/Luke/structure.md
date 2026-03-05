@@ -1,3 +1,19 @@
+# Ordem a fazer:
+
+- [x] Window + GLAD
+- [x] Shader
+- [x] Buffers (VAO/VBO/EBO)
+- [ ] Mesh
+- [ ] Transform
+- [ ] ECS mínimo
+- [ ] RenderSystem
+- [ ] Camera
+- [ ] Scene
+- [ ] ResourceManager
+
+# Estrutura
+
+``` bash
 Luke/
 │
 ├── core/
@@ -44,9 +60,14 @@ Luke/
 │
 ├── scene/
 │   ├── Scene.hpp
-│   └── SceneManager.hpp
+│   ├── SceneManager.hpp
+│   └── scenes/
+│        ├── Level1.hpp
+│        ├── Level2.hpp
+│        └── Pause.hpp
 │
 ├── resources/
 │   └── ResourceManager.hpp
 │
 └── main.cpp
+```

@@ -73,3 +73,13 @@ Luke/
 │
 └── main.cpp
 ```
+
+## Ideias
+
+Mais tarde você pode implementar algo como: (RenderSystem)
+
+```cpp
+for (Entity e : registry.view<Transform, MeshRenderer>())
+```
+
+Isso deixa o ECS 10x mais eficiente

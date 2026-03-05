@@ -12,7 +12,10 @@ struct CameraComponent {
 
     bool primary = true;
 
+    bool dirty = true;
+
     void updateProjection() {
         projection = glm::perspective(glm::radians(fov), aspect, nearPlane, farPlane);
+        dirty = false;
     }
 };

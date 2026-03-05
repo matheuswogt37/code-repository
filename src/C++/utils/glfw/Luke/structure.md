@@ -7,7 +7,7 @@
 - [x] Buffers (VAO/VBO/EBO)
 - [x] Mesh
 - [x] Transform
-- [ ] ECS mínimo
+- [x] ECS mínimo
 - [ ] RenderSystem
 - [ ] Camera
 - [ ] Scene

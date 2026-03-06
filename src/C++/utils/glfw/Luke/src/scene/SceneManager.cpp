@@ -17,6 +17,12 @@ void SceneManager::update(float dt) {
     }
 }
 
+void SceneManager::render() {
+    if (this->currentScene) {
+        this->currentScene->render();
+    }
+}
+
 std::shared_ptr<Scene> SceneManager::getCurrentScene() {
     return this->currentScene;
 }

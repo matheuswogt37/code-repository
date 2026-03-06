@@ -17,6 +17,7 @@ class Shader {
         /// @param vertexPath - e o primeiro estagio e processa cada vrtice individualmente. Seu objetivo principal e transformar coordenadas 3D em outras coordenadas 3D e realizar processamentos basicos nos atributos dos vertices
         /// @param fragmentPath - Sua funcao principal e calcular a cor final de um pixel. E nesta fase que ocorrem os efeitos mais avançados, como calculos de iluminacao, sombras e cores complexas
         Shader(const std::string &vertexPath, const std::string &fragmentPath);
+        ~Shader();
 
         void bind() const;
         void unbind() const;

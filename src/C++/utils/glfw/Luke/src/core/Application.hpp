@@ -4,11 +4,15 @@
 #include <memory>
 #include "Window.hpp"
 #include "Time.hpp"
+#include "../scene/SceneManager.hpp"
+#include "../resources/ResourceManager.hpp"
 
 class Application {
     private:
         std::unique_ptr<Window> window;
         std::unique_ptr<Time> time;
+        std::unique_ptr<SceneManager> sceneManager;
+        bool running;
         void terminate();
     public:
         /// @brief Construtor da aplicacao

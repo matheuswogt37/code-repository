@@ -5,6 +5,7 @@
 #include "../rendering/Shader.hpp"
 #include "../rendering/Texture.hpp"
 #include "../rendering/Mesh.hpp"
+#include "../rendering/MeshFactory.hpp"
 
 class ResourceManager {
     private:

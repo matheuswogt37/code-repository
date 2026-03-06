@@ -1,9 +1,10 @@
 #include "Application.hpp"
 
 //! private:
-void terminate() {
+void Application::terminate() {
+    ResourceManager::clear();
     //* terminate glad
-    //* terminate window
+    //* terminate window (destructor make this)
 }
 
 //! public:
@@ -26,28 +27,46 @@ void Application::initialize(int width, int heigth, std::string windowTittle) {
     //* init Window
     this->window = std::make_unique<Window>(width, heigth, windowTittle);
 
+    //* init glad
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    glEnable(GL_DEPTH_TEST);
+
     //* init Input
     this->time = std::make_unique<Time>();
+
+    //* others
+    this->running = true;
+    this->sceneManager = std::make_unique<SceneManager>();
+
+    //* load debug scene
+    this->sceneManager->loadScene("debugLevel");
 }
 
 void Application::run() {
     //* process input
     while (!glfwWindowShouldClose(this->window->window)) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //* time update
         this->time->update();
 
         //* input update
 
         //* scene manager actual scene update
+        this->sceneManager->update(this->time->getDeltaTime());
+        this->sceneManager->render();
 
         //* window update
         this->window->update();
     }
-    //* update
-        //* camera
-        //* physics system
-        //* animation system
-    //* render
-        //* all the render pass
-    //* shutdown -> call terminate
+
+    // * update
+    //     * camera
+    //     * physics system
+    //     * animation system
+    // * render
+    //     * all the render pass
+    // * shutdown -> call terminate
 }

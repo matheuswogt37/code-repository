@@ -40,6 +40,8 @@ void RenderSystem::render(Registry &registry) {
             shader.setMat4("u_Model", transform.getModelMatrix());
             shader.setMat4("u_View", view);
             shader.setMat4("u_Projection", projection);
+            shader.setVec3("u_Color", glm::vec3(1.0f, 0.4f, 0.2f)); //* think about it
+            std::cout << "ai\n";
 
             renderer.material->bind();
             renderer.mesh->draw();

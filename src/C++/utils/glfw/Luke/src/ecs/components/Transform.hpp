@@ -2,7 +2,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-struct Transform {
+#include "../Component.hpp"
+struct Transform : public Component {
     glm::vec3 position {0.f};
     glm::quat rotation {1.f, 0.f, 0.f, 0.f};
     glm::vec3 scale {1.f};

@@ -14,6 +14,10 @@ void DebugLevel::start() {
     MeshRenderer renderer;
     renderer.mesh = MeshFactory::createTriangle();
 
-    this->registry.addComponent(triangle, transform);
-    this->registry.addComponent(triangle, render);
+    auto shader = std::make_shared<Shader>(
+        "assets/shaders/basic.vert",
+        "assets/shaders/basic.frag"
+    );
+
+    renderer.material = std::make_shared<Material>(shader);
 }

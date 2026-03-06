@@ -2,4 +2,6 @@
 
 struct Component
 {
+    public:
+    virtual ~Component() = default;
 };

@@ -2,124 +2,88 @@
 #include "linmath.h"
 #include <iostream>
 
-// ============================
-// Global Variables
-// ============================
+void peppaHouse() {
+    //* chao
+    glBegin(GL_QUADS);
+        glColor3f(0.f, 1.f, 0.f);
+        glVertex3f(-1.f, -1.f, 0.f);
+        glVertex3f( 1.f, -1.f, 0.f);
+        glVertex3f( 1.f,  -0.5f, 0.f);
+        glVertex3f(-1.f,  -0.5f, 0.f);
+    glEnd();
 
-bool rotateLeft = false;
-bool rotateRight = false;
-bool moveLeft = false;
-bool moveRight = false;
-bool moveUp = false;
-bool moveDown = false;
 
-// ============================
-// Triangle Object
-// ============================
+    //* telhado
+    glBegin(GL_TRIANGLES);
+        glColor3f(1.f, 0.f, 0.f);
+        glVertex3f(-0.3f, 0.f, 0.f);
+        glVertex3f(0.3f, 0.f, 0.f);
+        glVertex3f(0.f, 0.3f, 0.f);
+    glEnd();
 
-class Triangle {
-    private:
-        //* movement
-        float posX, posY;
-        float moveSpeed;
 
-        //* rotation
-        float rotation;
-        float rotateSpeed;
-    public:
-        Triangle() : posX(0.f), posY(0.f), moveSpeed(2.5f), 
-        rotation(0.f), rotateSpeed(100.f) {}
-        ~Triangle() {}
-        void update(float deltaTime) {
-            //* movement
-            if (moveLeft) {
-                posX -= moveSpeed * deltaTime;
-            }
-            if (moveRight) {
-                posX += moveSpeed * deltaTime;
-            }
-            if (moveUp) {
-                posY += moveSpeed * deltaTime;
-            }
-            if (moveDown) {
-                posY -= moveSpeed * deltaTime;
-            }
+    //* casa
+    glBegin(GL_QUADS);
+        glColor3f(1.f, 1.f, 0.f);
+        glVertex3f(-0.3f, -0.5f, 0.f);
+        glVertex3f( 0.3f, -0.5f, 0.f);
+        glVertex3f( 0.3f,  0.f, 0.f);
+        glVertex3f(-0.3f,  0.f, 0.f);
+    glEnd();
 
-            //* rotation
-            if (rotateLeft) {
-                rotation += 100.0f * deltaTime;
-            }
-            if (rotateRight) {
-                rotation -= 100.0f * deltaTime;
-            }
+
+    //* porta (137,81,41) rgb
+    glBegin(GL_QUADS);
+        glColor3f((float) 137/255,(float) 81/255,(float) 41/255);
+        glVertex3f(-0.3f, -0.5f, 0.f);
+        glVertex3f(-0.1f, -0.5f, 0.f);
+        glVertex3f(-0.1f, -0.2f, 0.f);
+        glVertex3f(-0.3f, -0.2f, 0.f);
+    glEnd();
+
+    //* janela esq
+    glLineWidth(5.f);
+    glBegin(GL_LINE_LOOP);
+        glColor3f(1.f, 1.f, 1.f);
+        glVertex3f(-0.075f, -0.35f, 0.f);
+        glColor3f(0.f, 0.f, 0.f);
+        glVertex3f( 0.1f, -0.35f, 0.f);
+        glColor3f(0.f, 0.f, 0.f);
+        glVertex3f( 0.1f,  -0.1f, 0.f);
+        glColor3f(1.f, 1.f, 1.f);
+        glVertex3f(-0.075f,  -0.1f, 0.f);
+    glEnd();
+    glLineWidth(1.f);
+    //* janela dir
+    glLineWidth(5.f);
+    glBegin(GL_LINE_LOOP);
+        glColor3f(1.f, 1.f, 1.f);
+        glVertex3f(0.1125f, -0.35f, 0.f);
+        glColor3f(0.f, 0.f, 0.f);
+        glVertex3f(0.275f, -0.35f, 0.f);
+        glColor3f(0.f, 0.f, 0.f);
+        glVertex3f(0.275f,  -0.1f, 0.f);
+        glColor3f(1.f, 1.f, 1.f);
+        glVertex3f(0.1125f,  -0.1f, 0.f);
+    glEnd();
+    glLineWidth(1.f);
+    //* macaneta
+    glColor3f(0.f, 0.f, 0.f);
+    glBegin(GL_TRIANGLE_FAN);
+        float centerX = -0.15f;
+        float centerY = -0.375f;
+        float segments = 50;
+        float radius = 0.015f;
+        glVertex3f(centerX, centerY, 0.f);
+
+        for (int i = 0; i <= segments; i++) {
+            float angle = 2.0f * 3.1415926f * float(i) / float(segments);
+            float x = centerX + radius * cosf(angle);
+            float y = centerY + radius * sinf(angle);
+            glVertex3f(x, y, 0.f);
         }
-        void draw() {
-            glPushMatrix();
 
-            glTranslatef(posX, posY, 0.f);
-            glRotatef(rotation, 0.f, 0.f, 1.f);
-
-            glBegin(GL_TRIANGLES);
-                glColor3f(1.f, 0.f, 0.f);
-                glVertex3f(-0.6f, -0.4f, 0.f);
-
-                glColor3f(0.f, 1.f, 0.f);
-                glVertex3f(0.6f, -0.4f, 0.f);
-                
-                glColor3f(0.f, 0.f, 1.f);
-                glVertex3f(0.f, 0.6f, 0.f);
-            glEnd();
-
-            glPopMatrix();
-        }
-};
-
-
-// ============================
-// Global Input State
-// ============================
-
-static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
-    
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-    } else if (key == GLFW_KEY_LEFT) {
-        if (action == GLFW_PRESS) {
-            rotateLeft = true;
-        } else if (action == GLFW_RELEASE) {
-            rotateLeft = false;
-        }
-    } else if (key == GLFW_KEY_RIGHT) {
-        if (action == GLFW_PRESS) {
-            rotateRight = true;
-        } else if (action == GLFW_RELEASE) {
-            rotateRight = false;
-        }
-    } else if (key == GLFW_KEY_A) {
-        if (action == GLFW_PRESS) {
-            moveLeft = true;
-        } else if (action == GLFW_RELEASE) {
-            moveLeft = false;
-        }
-    } else if (key == GLFW_KEY_D) {
-        if (action == GLFW_PRESS) {
-            moveRight = true;
-        } else if (action == GLFW_RELEASE) {
-            moveRight = false;
-        }
-    } else if (key == GLFW_KEY_W) {
-        if (action == GLFW_PRESS) {
-            moveUp = true;
-        } else if (action == GLFW_RELEASE) {
-            moveUp = false;
-        }
-    } else if (key == GLFW_KEY_S) {
-        if (action == GLFW_PRESS) {
-            moveDown = true;
-        } else if (action == GLFW_RELEASE) {
-            moveDown = false;
-        }
-    }
+    glEnd();
 }
 
 // ============================
@@ -127,7 +91,6 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
 // ============================
 
 int main() {
-    
     if(!glfwInit()) {
         //! Error init glfw
         return 1;
@@ -142,9 +105,7 @@ int main() {
 
     glfwMakeContextCurrent(window);
 
-    glfwSetKeyCallback(window, key_callback);
-
-    Triangle triangle;
+    glClearColor(0.f, 0.f, 1.f, 1.f);
 
     float lastTime = 0.0f;
     while(!glfwWindowShouldClose(window)) {
@@ -158,7 +119,6 @@ int main() {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
 
-        
         glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
@@ -167,13 +127,8 @@ int main() {
         float deltaTime = currentTime - lastTime;
         lastTime = currentTime;
 
-        //* update objects
-        
-        triangle.update(deltaTime);
-        
         //* draw objects
-
-        triangle.draw();
+        peppaHouse();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

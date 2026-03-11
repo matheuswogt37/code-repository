@@ -6,6 +6,7 @@
 #include "Time.hpp"
 #include "../scene/SceneManager.hpp"
 #include "../resources/ResourceManager.hpp"
+#include "../scene/scenes/DebugLevel.hpp"
 
 class Application {
     private:

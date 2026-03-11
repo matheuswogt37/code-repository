@@ -41,6 +41,9 @@ void Application::initialize(int width, int heigth, std::string windowTittle) {
     this->running = true;
     this->sceneManager = std::make_unique<SceneManager>();
 
+    //* start debug scene
+    std::shared_ptr<DebugLevel> debugLevel = std::make_shared<DebugLevel>();
+    this->sceneManager->addScene("debugLevel", debugLevel);
     //* load debug scene
     this->sceneManager->loadScene("debugLevel");
 }

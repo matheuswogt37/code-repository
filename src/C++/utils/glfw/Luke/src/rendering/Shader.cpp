@@ -1,5 +1,20 @@
 #include "Shader.hpp"
 
+
+std::string Shader::readFile(const std::string& path) {
+    std::ifstream file(path);
+
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file: " << path << std::endl;
+        return "";
+    }
+
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+
+    return buffer.str();
+}
+
 unsigned int Shader::compileShader(unsigned int type, const std::string &source) {
     unsigned int id = glCreateShader(type); //* like 'GL_VERTEX_SHADER' or 'GL_FRAGMENT_SHADER'
     const char* src = source.c_str();
@@ -26,12 +41,12 @@ unsigned int Shader::compileShader(unsigned int type, const std::string &source)
 }
 
 Shader::Shader(const std::string &vertexPath, const std::string &fragmentPath) {
-    unsigned int vertex = compileShader(GL_VERTEX_SHADER, vertexPath);
+    unsigned int vertex = compileShader(GL_VERTEX_SHADER, readFile(vertexPath));
     if (vertex == 0) {
         return;
     }
 
-    unsigned int fragment = compileShader(GL_FRAGMENT_SHADER, fragmentPath);
+    unsigned int fragment = compileShader(GL_FRAGMENT_SHADER, readFile(fragmentPath));
     if (fragment == 0) {
         return;
     }

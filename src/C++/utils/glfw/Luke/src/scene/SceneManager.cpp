@@ -6,6 +6,10 @@ void SceneManager::addScene(const std::string &name, std::shared_ptr<Scene> scen
 
 void SceneManager::loadScene(const std::string &name) {
     this->currentScene = this->scenes[name];
+    if (this->currentScene == 0) {
+        std::cout << "loadScene error\n";
+        return;
+    }
     if (this->currentScene) {
         this->currentScene->start();
     }

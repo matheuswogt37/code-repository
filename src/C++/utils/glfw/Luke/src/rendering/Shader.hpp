@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <glm/common.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../../external/glad/include/glad/glad.h"
@@ -10,6 +12,8 @@ class Shader {
     private:
         /// @brief shader ID
         unsigned int programID;
+        /// @brief funcao para ler o arquivo do vertex e fragment
+        std::string readFile(const std::string& path);
         /// @brief compilador generico para shader
         unsigned int compileShader(unsigned int type, const std::string &source);
     public:
